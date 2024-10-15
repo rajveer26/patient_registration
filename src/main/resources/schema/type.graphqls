@@ -1,0 +1,27 @@
+# Define the custom scalar for Long
+scalar Long
+# Define the custom scalar for LocalDateTime
+scalar LocalDateTime
+# Define the custom scalar for LocalDate
+scalar LocalDate
+
+# QUERY
+type Query {
+   
+
+}
+
+# MUTATION
+type Mutation {
+  
+
+    #login
+    login(userCredentialsInput: UserCredentialsInput!): TokenResponse
+    refreshToken(token: String!): TokenResponse
+
+    # file upload
+    uploadFile(file: Upload): String
+
+    
+
+}

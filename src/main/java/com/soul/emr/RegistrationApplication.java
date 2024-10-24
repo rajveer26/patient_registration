@@ -4,8 +4,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -13,10 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 @SpringBootApplication
 @EnableAsync
 @Log4j2
-public class EmrApplication{
+public class RegistrationApplication{
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmrApplication.class, args);
+		SpringApplication.run(RegistrationApplication.class, args);
 	}
 	
 	

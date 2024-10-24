@@ -1,0 +1,32 @@
+
+# Define the BusinessGroup type with all the fields
+type BusinessGroupDB {
+    businessGroupId: ID!
+    businessGroupCode: String!
+    businessGroupName: String!
+    businessGroupTIN: String!
+    businessGroupGSTNumber: String!
+    isActive: Boolean!
+    organizationDBList: [OrganizationDB]
+    createdBy: Long
+    creationTimeStamp: LocalDateTime
+    updatedBy: Long
+    updationTimeStamp: LocalDateTime
+
+}
+
+# Input type for creating/updating a BusinessGroup
+input BusinessGroupInput {
+    businessGroupId: Long
+    businessGroupCode: String!
+    businessGroupName: String!
+    businessGroupTIN: String!
+    businessGroupGSTNumber: String!
+    organizationDBList: [OrganizationGroupInput]
+    isActive: Boolean!
+    updatedBy: Long
+    updationTimeStamp: LocalDateTime
+    createdBy: Long
+    creationTimeStamp: LocalDateTime
+}
+

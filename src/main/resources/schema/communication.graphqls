@@ -1,0 +1,64 @@
+type CommunicationInfoDB {
+    CommunicationInfoId: ID
+    address: String!
+    pinCode: Int!
+    country: String!
+    state: String!
+    district: String!
+    city: String!
+    locality: String!
+    contactNumber: String!
+    countryCode: String
+    isMobileVerified: Boolean
+    isEmailVerified: Boolean
+    emailId: String!
+    isActive: Boolean!
+    contactPersonName: String
+    contactPersonMobileNumber: String
+    contactPersonEmailId: String
+    employeeInfoDB: EmployeeInfoDB
+    organizationGroupInput: OrganizationDB
+}
+
+input CommunicationInfoInput {
+    CommunicationInfoId: Long
+    address: String!
+    pinCode: Int!
+    country: String!
+    state: String!
+    district: String!
+    city: String!
+    locality: String!
+    contactNumber: String!
+    countryCode: String
+    emailId: String!
+    isMobileVerified: Boolean
+    isEmailVerified: Boolean
+    isActive: Boolean!
+    contactPersonName: String
+    contactPersonMobileNumber: String
+    contactPersonEmailId: String
+    employeeInfoDB: EmployeeInfoInput
+    organizationGroupInput: OrganizationGroupInput
+}
+
+type CommunicationSearch {
+    CommunicationInfoId: Long
+    address: String!
+    pinCode: Int!
+    country: String!
+    state: String!
+    district: String!
+    city: String!
+    locality: String!
+    contactNumber: String!
+    countryCode: String
+    emailId: String!
+    isMobileVerified: Boolean
+    isEmailVerified: Boolean
+    isActive: Boolean!
+    contactPersonName: String
+    contactPersonMobileNumber: String
+    contactPersonEmailId: String
+
+}

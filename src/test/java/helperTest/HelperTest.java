@@ -1,6 +1,7 @@
 package helperTest;
 
 import com.soul.emr.auth.security.AuthAbstract;
+import com.soul.emr.dao.EmrDaoInterf;
 import com.soul.emr.masters.service.MastersServiceInterf;
 import com.soul.emr.model.entity.email.EmailEntity;
 import com.soul.emr.helper.Helper;
@@ -51,6 +52,8 @@ public class HelperTest {
     private MockWebServer mockWebServer;
     
     private MastersServiceInterf mastersServiceInterf;
+    
+    private EmrDaoInterf emrDaoInterf;
 
     @InjectMocks
     private Helper helper;
@@ -68,7 +71,7 @@ public class HelperTest {
         MockitoAnnotations.openMocks(this);
 
          // Inject the WebClient mock into the Helper
-        helper = new Helper(webClient, authAbstract, emailSender, templateEngine, environment, mastersServiceInterf);
+        helper = new Helper(webClient, authAbstract, emailSender, templateEngine, environment, mastersServiceInterf, emrDaoInterf);
     }
 
     @AfterEach
@@ -94,7 +97,7 @@ public class HelperTest {
     public void testGenerateOTPException() {
 
         // Creating a subclass to simulate the exception
-        Helper helperWithException = new Helper(null, null, null, null, null, null) {
+        Helper helperWithException = new Helper(null, null, null, null, null, null, null) {
 
             @Override
             public Integer generateOTP() {

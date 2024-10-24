@@ -1,0 +1,14 @@
+type RolesDB {
+    rolesId: ID!
+    roleMaster: RoleMasterDB!
+    employeeInfoDB: [EmployeeInfoDB]
+    patientDetailsDBSet: [PatientDetailsDB]
+
+}
+
+input RoleInput {
+    rolesId: Long
+    roleMaster: RoleMasterInput!
+    employeeInfoDB: [EmployeeInfoInput]
+    patientDetailsDBSet: [PatientDetailsInput]
+}

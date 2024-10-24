@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.soul</groupId>
-	<artifactId>emr-2.0</artifactId>
+	<artifactId>patient-registration</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>emr</name>
 	<description>Demo project for Spring Boot</description>

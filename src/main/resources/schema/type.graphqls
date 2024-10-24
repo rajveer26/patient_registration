@@ -7,13 +7,64 @@ scalar LocalDate
 
 # QUERY
 type Query {
-   
+    # one time password
+    getOTP(id: ID!): OneTimePasswordEntityDB
+
+    #business group
+    getBusinessGroup(page: Int, size: Int): [BusinessGroupDB]
+
+    #get userInfo based on userName
+    getUserInfo(userName: String): EmployeeInfoDB
+
+    #get roleMaster
+    getAllRolesMaster: [RoleMasterDB]
+    getRolesMasterId(roleMasterId: Long): RoleMasterDB
+
+    #get departmentMaster
+    getAllDepartmentMaster: [DepartmentMasterDB]
+    getDepartmentMasterId(departmentMasterId: Long): DepartmentMasterDB
+
+    #get patientDetails
+    patientSearchList(patientSearchQuery : String) : [PatientSearch]
+
+    #get patientConsultation
+    fetchPatientConsultation(doctorCode : String, type : String, page : Int, size : Int, date : LocalDate, consultationStatus : String) : [PatientConsultationDB]
+    patientCountBasedOnTypeAndDoctorCode(type : String, doctorCode : String) : Long
+
+    #get holiday master
+    getHolidayMasterById(holidayMasterId: Long): HolidayMasterDB
+    getHolidayMasterByIds(holidayMasterIds: [Long]) : [HolidayMasterDB]
+    getAllHolidays: [HolidayMasterDB]
+
+    #get blocks master
+    getAllBlocksMaster: [BlockDetailsMasterDB]
+    getAllBlockById(blockMasterId: Long): BlockDetailsMasterDB
+    getAllBlockByIds(blockMasterIds: [Long]) : [BlockDetailsMasterDB]
+
+    #get employee schedules
+    getAllEmployeeSchedules: [EmployeeScheduleDB]
+    getAllEmployeeSchedulesById(empScheduleId: Long): EmployeeScheduleDB
+    getAllEmployeeSchedulesByIds(empScheduleIds: [Long]): [EmployeeScheduleDB]
+
+    #for prefix master
+    fetchAllPrefixMaster(isActive: Boolean): [PrefixMasterSearch]
+    fetchPrefixMasterUsingId(id: Long): PrefixMasterDB
 
 }
 
 # MUTATION
 type Mutation {
-  
+    # user details
+    createUserInfo(employeeInfoInput: EmployeeInfoInput!): EmployeeInfoDB
+    updateUserInfo(employeeInfoInput: EmployeeInfoInput!): EmployeeInfoDB
+    createAdminInfo(employeeInfoInput: EmployeeInfoInput!): EmployeeInfoDB
+
+
+    #one time password
+    sendOTP(input: OneTimePasswordInput!): otpResponse
+    verifyOTP(input: OneTimePasswordInput!) : otpResponse
+    sendOTPForAdminRegistration(oneTimePasswordInput: OneTimePasswordInput!): otpResponse
+    verifyOTPForAdminRegistration(oneTimePasswordInput: OneTimePasswordInput!) : otpResponse
 
     #login
     login(userCredentialsInput: UserCredentialsInput!): TokenResponse
@@ -22,6 +73,10 @@ type Mutation {
     # file upload
     uploadFile(file: Upload): String
 
-    
+    #business group
+    createUpdateBusinessGroup(businessGroupInput: BusinessGroupInput!): BusinessGroupDB
+
+    #patient details
+    savePatientDetails(patientDetailsInput: PatientDetailsInput): PatientDetailsDB
 
 }

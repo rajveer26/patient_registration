@@ -1,0 +1,24 @@
+enum Provider {
+    GOOGLE
+    LOCAL
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    TRANSGENDER
+    OTHER
+    BOTH
+}
+
+enum Medium {
+    EMAIL
+    SMS
+    PHONE
+}
+
+enum Severity {
+    LOW
+    MEDIUM
+    HIGH
+}

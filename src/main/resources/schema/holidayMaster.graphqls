@@ -1,0 +1,18 @@
+
+type HolidayMasterDB {
+    holidayMasterId: ID!
+    holidayDate: LocalDate
+    typeOfHoliday: String
+    occasion: String
+    isPublicHoliday: Boolean
+    isApplicableToAllSites: Boolean
+}
+
+input HolidayMasterInput {
+    holidayMasterId: Long
+    holidayDate: LocalDate
+    typeOfHoliday: String
+    occasion: String
+    isPublicHoliday: Boolean
+    isApplicableToAllSites: Boolean
+}

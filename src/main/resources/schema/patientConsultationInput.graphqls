@@ -1,0 +1,56 @@
+type PatientConsultationDB {
+    patientRegistrationId: ID!
+    visitId: Int
+    visitNo: String
+    type: String
+    status: String
+    encounterId: Int
+    serviceCenterId: Int
+    storeCode: String
+    storeId: Int
+    visitTypeId: Int
+    visitTypeCode: String
+    encounterDate: String
+    unitHead: String
+    unitName: String
+    pvsId: Long
+    branchName: String
+    consultationStatus: String
+    branchCode: String
+    patientStatus: String
+    queueNo: String
+    consultationType: String
+    isDeleted: Boolean
+    patientDetailDB: PatientDetailsDB
+    employeeInfoDB: EmployeeInfoDB
+    siteId: OrganizationDB
+}
+
+
+input PatientConsultationInput {
+    patientRegistrationId: Long
+    visitId: Int
+    visitNo: String
+    type: String
+    status: String
+    encounterId: Int
+    serviceCenterId: Int
+    storeCode: String
+    storeId: Int
+    visitTypeId: Int
+    visitTypeCode: String
+    encounterDate: String
+    unitHead: String
+    unitName: String
+    pvsId: Long
+    branchName: String
+    consultationStatus: String
+    branchCode: String
+    patientStatus: String
+    queueNo: String
+    consultationType: String
+    isDeleted: Boolean
+    patientDetailsInput: PatientDetailsInput
+    employeeInfoDB: EmployeeInfoInput
+    siteId: OrganizationGroupInput
+}

@@ -1,0 +1,17 @@
+type PrefixMasterDB{
+    prefixMasterId: Long
+    prefixName: String
+    isActive: Boolean
+}
+
+input PrefixMasterInput{
+    prefixMasterId: Long
+    prefixName: String
+    isActive: Boolean
+}
+
+type PrefixMasterSearch{
+    prefixMasterId: Long
+    prefixName: String
+    isActive: Boolean
+}

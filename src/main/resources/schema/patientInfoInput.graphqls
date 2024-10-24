@@ -1,0 +1,45 @@
+
+type PatientDetailsDB {
+    patientId: ID!
+    patientName: String!
+    gender: Gender!
+    mrno: String!
+    dob: LocalDate!
+    patientImage: String
+    registeredOn: LocalDate
+    planName: String
+    prefixMasterDB: PrefixMasterDB
+    communicationInfoDB: [CommunicationInfoDB]
+    patientRegistrations: [PatientConsultationDB]
+    roles: [RolesDB]
+}
+
+
+# Define the PatientVisitInput type
+input PatientDetailsInput {
+    patientId: Long
+    patientName: String!
+    gender: Gender!
+    mrno: String!
+    dob: LocalDate!
+    patientImage: String
+    registeredOn: LocalDate
+    planName: String
+    prefixMasterDB: PrefixMasterInput
+    communicationInfoDB: [CommunicationInfoInput]
+    patientRegistrations: [PatientConsultationInput]
+    roles: [RoleInput]
+}
+
+# Define the PatientVisitInput type
+type PatientSearch {
+    patientId: Long
+    patientName: String!
+    gender: Gender!
+    mrno: String!
+    dob: LocalDate!
+    patientImage: String
+    registeredOn: LocalDate
+    planName: String
+    communicationInfoDB: [CommunicationSearch]
+}

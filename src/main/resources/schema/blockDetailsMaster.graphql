@@ -1,0 +1,15 @@
+type BlockDetailsMasterDB {
+    blockMasterId: ID!
+    fromTime: LocalDateTime
+    toTime: LocalDateTime
+    blockName: String
+    employeeInfoDB: [EmployeeInfoDB]
+}
+
+input BlockDetailsMasterInput {
+    blockMasterId: ID!
+    fromTime: LocalDateTime
+    toTime: LocalDateTime
+    blockName: String
+    employeeInfoDB: [EmployeeInfoInput]
+}

@@ -1,0 +1,15 @@
+type PrivilegesMasterDB {
+    privilegesId: ID!
+    privilegesName: String
+    privilegesCode: String
+    rolesDB: RolesDB
+}
+
+
+input PrivilegesInput {
+    privilegesId: Long
+    privilegesName: String
+    privilegesCode: String
+    rolesDB: RoleInput
+}
+

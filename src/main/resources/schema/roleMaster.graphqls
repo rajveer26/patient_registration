@@ -1,0 +1,14 @@
+type RoleMasterDB {
+    roleMasterId: ID!
+    roleMasterName: String
+    roleMasterCode: String!
+    privileges: [PrivilegesMasterDB]
+}
+
+input RoleMasterInput {
+    roleMasterId: Long
+    roleMasterName: String
+    roleMasterCode: String!
+    privileges: [PrivilegesInput]
+}
+

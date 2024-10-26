@@ -93,7 +93,7 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonManagedReference
 	@JsonProperty("communicationInfoDB")
 	@OneToMany(mappedBy = "patientDetailsDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-	private List <CommunicationInfoDB> communicationInfoDB = new ArrayList <>();
+	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
 	
 	@JsonManagedReference
 	@JsonProperty("patientRegistrations")

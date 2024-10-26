@@ -80,7 +80,7 @@ public class PatientService implements PatientServiceInterf{
 		if (!Objects.isNull(patientDetailsInput.getCommunicationInfoDB()) && !patientDetailsInput.getCommunicationInfoDB().isEmpty()) {
 			
 			//extracting a list of CommunicationInfoDB from patientDetailsDB object
-			List <CommunicationInfoDB> communicationInfoDBList = patientDetailsDB.getCommunicationInfoDB();
+			Set <CommunicationInfoDB> communicationInfoDBList = patientDetailsDB.getCommunicationInfoDB();
 			
 			//using for-each
 			patientDetailsInput.getCommunicationInfoDB().forEach(communicationInfoInput -> {
@@ -91,20 +91,12 @@ public class PatientService implements PatientServiceInterf{
 					//if an object is present
 					if (existingCommunication.isPresent()) {
 						
-						//extracting index of an object from the list
-						int index = communicationInfoDBList.indexOf(existingCommunication.get());
-						
-						//extracting CommunicationInfoDB object from Optional
-						CommunicationInfoDB communicationInfoDB = existingCommunication.get();
-						
 						//calling setCommunicationDataMembers() method present in helperInterf
-						CommunicationInfoDB updatedCommunicationInfoDB = this.helperInterf.setCommunicationDataMembers(communicationInfoDB, communicationInfoInput);
+						CommunicationInfoDB updatedCommunicationInfoDB = this.helperInterf.setCommunicationDataMembers(existingCommunication.get(), communicationInfoInput);
 						
 						//setting reference
 						updatedCommunicationInfoDB.setPatientDetailsDB(patientDetailsDB);
 						
-						//updating the object in a list
-						communicationInfoDBList.set(index, updatedCommunicationInfoDB);
 					} else {
 						
 						//creating a new CommunicationInfoDB object

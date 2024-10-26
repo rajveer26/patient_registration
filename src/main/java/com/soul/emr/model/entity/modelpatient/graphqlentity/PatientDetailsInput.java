@@ -75,7 +75,7 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 	private Set <RoleInput> roles = new HashSet <>();
 	
 	@JsonProperty("communicationInfoDB")
-	private List <CommunicationInfoInput> communicationInfoDB = new ArrayList <>();
+	private Set <CommunicationInfoInput> communicationInfoDB = new HashSet <>();
 	
 	@JsonProperty("patientRegistrations")
 	private List <PatientConsultationInput> patientRegistrations = new ArrayList <>();

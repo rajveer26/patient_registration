@@ -27,7 +27,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"roles", "patientRegistrations", "communicationInfoDB"})
 @Entity
-@Table(name = "patient_details")
+@Table(name = "EMR_TXN_REGISTRATION_DETAILS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,13 +41,25 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_registration")
-	@SequenceGenerator(name = "seq_patient_registration", sequenceName = "seq_patient_registration", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_registration")
+	@SequenceGenerator(name = "seq_patient_self_registration", sequenceName = "seq_patient_self_registration", allocationSize = 1)
 	@JsonProperty("patientId")
 	@Column(name = "patient_Id")
 	private Long patientId;
-	
-	@Column(name = "patient_name", nullable = false)
+
+	@Column(name = "first_name", nullable = false)
+	@JsonProperty("firstName")
+	private String firstName;
+
+	@Column(name = "middle_name")
+	@JsonProperty("middleName")
+	private String middleName;
+
+	@Column(name = "last_name")
+	@JsonProperty("lastName")
+	private String lastName;
+
+	@Column(name = "patient_name")
 	@JsonProperty("patientName")
 	private String patientName;
 	
@@ -66,6 +78,10 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate dob;
+
+	@Column(name = "age")
+	@JsonProperty("age")
+	private Integer age;
 	
 	@Lob
 	@Column(name = "patient_image", columnDefinition = "CLOB")
@@ -79,20 +95,28 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate registeredOn;
 	
-	@Column(name = "PATIENT_PLAN_NAME")
-	@JsonProperty("planName")
-	private String planName;
+	@Column(name = "marital_status")
+	@JsonProperty("maritalStatus")
+	private String maritalStatus;
+
+	@Column(name = "smart_card_id")
+	@JsonProperty("smartCardId")
+	private String smartCardId;
+
+	@Column(name = "esi_ip_number")
+	@JsonProperty("esiIpNumber")
+	private String esiIpNumber;
 	
 	@JsonProperty("prefixMasterDB")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private PrefixMasterDB prefixMasterDB;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "patient_info_role_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "roles_Id")})
+	@JoinTable(name = "patient_registration_info_role_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "roles_Id")})
 	private Set <RolesDB> roles = new HashSet <>();
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "emr_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
+	@JoinTable(name = "emr_registration_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
 	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
 	
 	@JsonManagedReference

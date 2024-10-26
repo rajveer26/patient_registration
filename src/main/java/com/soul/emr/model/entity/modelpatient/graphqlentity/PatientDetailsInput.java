@@ -11,6 +11,7 @@ import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoIn
 import com.soul.emr.model.entity.enummaster.Gender;
 import com.soul.emr.model.entity.masterentity.graphqlentity.PrefixMasterInput;
 import com.soul.emr.model.entity.modelemployee.graphqlentity.RoleInput;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -32,51 +33,68 @@ import java.util.Set;
 @NoArgsConstructor
 public class PatientDetailsInput extends WhoseColumnsEntity
 {
-	
+
 	@JsonProperty("patientId")
 	private Long patientId;
-	
-	@NotBlank(message = "patient name cannot be null")
-	@JsonProperty("patientName")
-	private String patientName;
-	
-	@Enumerated(EnumType.STRING)
-	@NotBlank(message = "gender cannot be blank")
-	@JsonProperty("gender")
-	private Gender gender;
-	
-	@NotBlank(message = "mrno cannot be blank")
+
 	@JsonProperty("mrno")
 	private String mrno;
-	
-	@NotNull(message = "dob cannot be blank")
+
+	@NotBlank(message = "patient first name cannot be null")
+	@JsonProperty("firstName")
+	private String firstName;
+
+	@JsonProperty("middleName")
+	private String middleName;
+
+	@JsonProperty("lastName")
+	private String lastName;
+
+	@JsonProperty("patientName")
+	private String patientName;
+
+	@Enumerated(EnumType.STRING)
+//	@NotBlank(message = "gender cannot be blank")
+	@JsonProperty("gender")
+	private Gender gender;
+
+	//	@NotBlank(message = "gender cannot be blank")
+	@JsonProperty("maritalStatus")
+	private String maritalStatus;
+
 	@JsonProperty("dob")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate dob;
-	
+
+	@JsonProperty("age")
+	private Integer age;
+
 	@JsonProperty("patientImage")
 	private String patientImage;
-	
+
 	@JsonProperty("registeredOn")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate registeredOn;
-	
-	@JsonProperty("planName")
-	private String planName;
-	
+
+	@JsonProperty("smartCardId")
+	private String smartCardId;
+
+	@JsonProperty("esiIpNumber")
+	private String esiIpNumber;
+
 	@JsonProperty("prefixMasterDB")
 	private PrefixMasterInput prefixMasterDB;
-	
+
 	@JsonProperty("roles")
 	private Set <RoleInput> roles = new HashSet <>();
-	
+
 	@JsonProperty("communicationInfoDB")
 	private Set <CommunicationInfoInput> communicationInfoDB = new HashSet <>();
-	
+
 	@JsonProperty("patientRegistrations")
 	private List <PatientConsultationInput> patientRegistrations = new ArrayList <>();
 }

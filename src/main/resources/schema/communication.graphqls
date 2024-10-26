@@ -1,18 +1,86 @@
+#type CommunicationInfoDB {
+#    CommunicationInfoId: ID
+#    address: String!
+#    pinCode: Int!
+#    country: String!
+#    state: String!
+#    district: String!
+#    city: String!
+#    locality: String!
+#    contactNumber: String!
+#    countryCode: String
+#    isMobileVerified: Boolean
+#    isEmailVerified: Boolean
+#    emailId: String!
+#    isActive: Boolean!
+#    contactPersonName: String
+#    contactPersonMobileNumber: String
+#    contactPersonEmailId: String
+#    employeeInfoDB: EmployeeInfoDB
+#    organizationGroupInput: OrganizationDB
+#}
+#
+#input CommunicationInfoInput {
+#    CommunicationInfoId: Long
+#    address: String!
+#    pinCode: Int!
+#    country: String!
+#    state: String!
+#    district: String!
+#    city: String!
+#    locality: String!
+#    contactNumber: String!
+#    countryCode: String
+#    emailId: String!
+#    isMobileVerified: Boolean
+#    isEmailVerified: Boolean
+#    isActive: Boolean!
+#    contactPersonName: String
+#    contactPersonMobileNumber: String
+#    contactPersonEmailId: String
+#    employeeInfoDB: EmployeeInfoInput
+#    organizationGroupInput: OrganizationGroupInput
+#}
+#
+#type CommunicationSearch {
+#    CommunicationInfoId: Long
+#    address: String!
+#    pinCode: Int!
+#    country: String!
+#    state: String!
+#    district: String!
+#    city: String!
+#    locality: String!
+#    contactNumber: String!
+#    countryCode: String
+#    emailId: String!
+#    isMobileVerified: Boolean
+#    isEmailVerified: Boolean
+#    isActive: Boolean!
+#    contactPersonName: String
+#    contactPersonMobileNumber: String
+#    contactPersonEmailId: String
+#
+#}
+
+
+
+# Define the CommunicationInfoDB type
 type CommunicationInfoDB {
     CommunicationInfoId: ID
-    address: String!
-    pinCode: Int!
-    country: String!
-    state: String!
-    district: String!
-    city: String!
-    locality: String!
-    contactNumber: String!
+    address: String
+    pinCode: Int
+    country: String
     countryCode: String
-    isMobileVerified: Boolean
-    isEmailVerified: Boolean
-    emailId: String!
+    state: String
+    district: String
+    cityVillage: String
+    policeStation: String
+    emailId: String
+    mobileNumber: String!
+    nationality: String!
     isActive: Boolean!
+    contactPersonRelation: String
     contactPersonName: String
     contactPersonMobileNumber: String
     contactPersonEmailId: String
@@ -21,21 +89,22 @@ type CommunicationInfoDB {
     patientDetails: [PatientDetailsDB]
 }
 
+# Define the input type CommunicationInfoInput
 input CommunicationInfoInput {
     CommunicationInfoId: Long
-    address: String!
-    pinCode: Int!
-    country: String!
-    state: String!
-    district: String!
-    city: String!
-    locality: String!
-    contactNumber: String!
+    address: String
+    pinCode: Int
+    country: String
     countryCode: String
-    emailId: String!
-    isMobileVerified: Boolean
-    isEmailVerified: Boolean
+    state: String
+    district: String
+    cityVillage: String
+    policeStation: String
+    emailId: String
+    mobileNumber: String!
+    nationality: String!
     isActive: Boolean!
+    contactPersonRelation: String
     contactPersonName: String
     contactPersonMobileNumber: String
     contactPersonEmailId: String
@@ -44,23 +113,23 @@ input CommunicationInfoInput {
     patientDetails: [PatientDetailsInput]
 }
 
+# Define a simplified CommunicationSearch type for search results
 type CommunicationSearch {
     CommunicationInfoId: Long
-    address: String!
-    pinCode: Int!
-    country: String!
-    state: String!
-    district: String!
-    city: String!
-    locality: String!
-    contactNumber: String!
+    address: String
+    pinCode: Int
+    country: String
     countryCode: String
-    emailId: String!
-    isMobileVerified: Boolean
-    isEmailVerified: Boolean
+    state: String
+    district: String
+    cityVillage: String
+    policeStation: String
+    emailId: String
+    mobileNumber: String!
+    nationality: String!
     isActive: Boolean!
+    contactPersonRelation: String
     contactPersonName: String
     contactPersonMobileNumber: String
     contactPersonEmailId: String
-
 }

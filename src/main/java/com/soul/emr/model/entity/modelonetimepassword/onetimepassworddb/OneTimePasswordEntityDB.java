@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "emr_txn_otp")
+@Table(name = "EMR_REGISTRATION_TXN_OTP")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,8 +28,8 @@ public class OneTimePasswordEntityDB extends WhoseColumnsEntity implements Seria
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_otp")
-    @SequenceGenerator(name = "seq_otp", sequenceName = "seq_otp", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "seq_registration_otp")
+    @SequenceGenerator(name = "seq_registration_otp", sequenceName = "seq_registration_otp", allocationSize = 1)
     private Long otpId;
     
     @JsonProperty("identifier")

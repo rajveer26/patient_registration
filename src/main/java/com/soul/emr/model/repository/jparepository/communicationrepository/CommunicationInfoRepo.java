@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface CommunicationInfoRepo extends JpaRepository<CommunicationInfoDB, Long>
 {
 	@Transactional
-	@Query("SELECT a FROM CommunicationInfoDB a WHERE a.contactNumber = :mobileNo")
+	@Query("SELECT a FROM CommunicationInfoDB a WHERE a.mobileNumber = :mobileNo")
 	Optional <CommunicationInfoDB> findPatientDetailsDBByMobileNo(@Param("mobileNo") String mobileNo);
-	
+
 }

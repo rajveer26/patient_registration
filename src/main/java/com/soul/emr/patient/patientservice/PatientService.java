@@ -95,7 +95,7 @@ public class PatientService implements PatientServiceInterf{
 						CommunicationInfoDB updatedCommunicationInfoDB = this.helperInterf.setCommunicationDataMembers(existingCommunication.get(), communicationInfoInput);
 						
 						//setting reference
-						updatedCommunicationInfoDB.setPatientDetailsDB(patientDetailsDB);
+						updatedCommunicationInfoDB.setPatientDetails(Set.of(patientDetailsDB));
 						
 					} else {
 						
@@ -106,7 +106,7 @@ public class PatientService implements PatientServiceInterf{
 						CommunicationInfoDB communicationInfoDB = this.helperInterf.setCommunicationDataMembers(newCommunicationInfoDB, communicationInfoInput);
 						
 						//setting reference
-						communicationInfoDB.setPatientDetailsDB(patientDetailsDB);
+						communicationInfoDB.setPatientDetails(Set.of(patientDetailsDB));
 						
 						//adding an object in a list
 						communicationInfoDBList.add(communicationInfoDB);
@@ -215,6 +215,7 @@ public class PatientService implements PatientServiceInterf{
 	
 	//to set patient registration
 	private PatientConsultationDB setPatientRegistration(PatientConsultationDB patientConsultationDB, PatientConsultationInput patientConsultationInput) throws RuntimeException{
+		
 		// Setting data members for patientConsultationDB from patientConsultationInput
 		patientConsultationDB.setVisitId(patientConsultationInput.getVisitId());
 		patientConsultationDB.setVisitNo(patientConsultationInput.getVisitNo());

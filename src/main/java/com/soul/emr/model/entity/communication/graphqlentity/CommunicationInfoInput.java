@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.modelbusinessgroup.organization.graphqlentity.OrganizationGroupInput;
 import com.soul.emr.model.entity.modelemployee.graphqlentity.EmployeeInfoInput;
+import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -76,4 +80,7 @@ public class CommunicationInfoInput extends WhoseColumnsEntity
 	
 	@JsonProperty("organizationGroupDB")
 	private OrganizationGroupInput organizationGroupInput;
+	
+	@JsonProperty("patientDetails")
+	private Set <PatientDetailsInput> patientDetails = new HashSet <>();
 }

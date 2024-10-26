@@ -8,6 +8,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.enummaster.Gender;
+import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
 import com.soul.emr.model.entity.masterentity.masterdb.PrefixMasterDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
 import jakarta.persistence.*;
@@ -78,7 +79,7 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate registeredOn;
 	
-	@Column(name = "plan_name")
+	@Column(name = "PATIENT_PLAN_NAME")
 	@JsonProperty("planName")
 	private String planName;
 	
@@ -90,9 +91,8 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JoinTable(name = "patient_info_role_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "roles_Id")})
 	private Set <RolesDB> roles = new HashSet <>();
 	
-	@JsonManagedReference
-	@JsonProperty("communicationInfoDB")
-	@OneToMany(mappedBy = "patientDetailsDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "emr_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
 	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
 	
 	@JsonManagedReference

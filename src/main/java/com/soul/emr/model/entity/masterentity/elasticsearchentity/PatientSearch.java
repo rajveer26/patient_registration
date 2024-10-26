@@ -22,7 +22,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -71,5 +73,5 @@ public class PatientSearch extends WhoseColumnsEntity implements Serializable
 	private String planName;
 	
 	@Field(type = FieldType.Nested, includeInParent = true)
-	private List <CommunicationSearch> communicationInfoDB = new ArrayList <>();
+	private Set <CommunicationSearch> communicationInfoDB = new HashSet <>();
 }

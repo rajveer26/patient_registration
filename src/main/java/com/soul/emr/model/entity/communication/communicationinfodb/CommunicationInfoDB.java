@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.modelbusinessgroup.organization.organizationdb.OrganizationDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
+import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -15,8 +16,10 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB", "organizationDB", "patientDetailsDB"})
+@EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB", "organizationDB", "patientDetails"})
 @Entity
 @Table(name = "EMR_TXN_COMMUNICATION_INFO")
 @Data
@@ -112,9 +115,7 @@ public class CommunicationInfoDB extends WhoseColumnsEntity implements Serializa
 	@JoinColumn(name = "organization_Info_Id", referencedColumnName = "organization_Master_Id")
 	private OrganizationDB organizationDB;
 	
-	@JsonBackReference
-	@JsonProperty("patientDetailsDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patient_Info_Id", referencedColumnName = "patient_Id")
-	private PatientDetailsDB patientDetailsDB;
+	@JsonProperty("patientDetails")
+	@ManyToMany(mappedBy = "communicationInfoDB", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private Set <PatientDetailsDB> patientDetails = new HashSet <>();
 }

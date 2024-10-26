@@ -497,14 +497,8 @@ public class Helper implements HelperInterf
 			//setting role master
 			if (!Objects.isNull(jsonRoles.getRoleMaster())) {
 				
-				//creating a new RoleMasterDB object
-				RoleMasterDB newRoleMaster = new RoleMasterDB();
-				
-				//setting role master data-members
-				newRoleMaster.setRoleMasterId(jsonRoles.getRoleMaster().getRoleMasterId());
-				
 				//calling current class setRoleMaster() method to set roleMaster
-				dbRoles.setRoleMaster(emrDaoInterf.getRoleMaster(jsonRoles.getRolesId()).orElseThrow(() -> new DgsEntityNotFoundException("Role Master not found")));
+				dbRoles.setRoleMaster(emrDaoInterf.getRoleMaster(jsonRoles.getRoleMaster().getRoleMasterId()).orElseThrow(() -> new DgsEntityNotFoundException("Role Master not found")));
 			}
 			//returning dbRoles
 			return dbRoles;

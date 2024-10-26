@@ -18,6 +18,7 @@ type CommunicationInfoDB {
     contactPersonEmailId: String
     employeeInfoDB: EmployeeInfoDB
     organizationGroupInput: OrganizationDB
+    patientDetails: [PatientDetailsDB]
 }
 
 input CommunicationInfoInput {
@@ -40,6 +41,7 @@ input CommunicationInfoInput {
     contactPersonEmailId: String
     employeeInfoDB: EmployeeInfoInput
     organizationGroupInput: OrganizationGroupInput
+    patientDetails: [PatientDetailsInput]
 }
 
 type CommunicationSearch {

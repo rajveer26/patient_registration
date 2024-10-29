@@ -1,0 +1,46 @@
+scalar Binary
+
+type AbhaValidateOtpResponse {
+    txnId: String
+    message: String
+    tokens: AbhaTokensResponse
+    abhaProfile: ABHAProfileResponse
+    isNew: Boolean
+    imageBase64String: String
+    imageByte: [Binary]
+}
+
+type AbhaTokensResponse {
+    token: String
+    expiresIn: Int
+    refreshToken: String
+    refreshExpiresIn: Int
+}
+
+type ABHAProfileResponse {
+    firstName: String
+    middleName: String
+    lastName: String
+    dob: String
+    gender: String
+    photo: String
+    mobile: String
+    phrAddress: [String]
+    address: String
+    districtCode: String
+    stateCode: String
+    pinCode: String
+    abhaType: String
+    stateName: String
+    districtName: String
+    ABHANumber: String
+    abhaStatus: String
+}
+
+
+input AbhaValidateOtpInput {
+
+    mobileNo: Long!
+    txnId: String!
+    otp: String!
+}

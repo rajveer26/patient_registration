@@ -11,11 +11,9 @@ import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoIn
 import com.soul.emr.model.entity.enummaster.Gender;
 import com.soul.emr.model.entity.masterentity.graphqlentity.PrefixMasterInput;
 import com.soul.emr.model.entity.modelemployee.graphqlentity.RoleInput;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,7 +38,7 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 	@JsonProperty("mrno")
 	private String mrno;
 
-	@NotBlank(message = "patient first name cannot be null")
+	@NotBlank(message = "PATIENT FIRSTNAME CANNOT BE BLANK")
 	@JsonProperty("firstName")
 	private String firstName;
 
@@ -54,11 +52,10 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 	private String patientName;
 
 	@Enumerated(EnumType.STRING)
-//	@NotBlank(message = "gender cannot be blank")
+	@NotBlank(message = "GENDER CANNOT BE BLANK")
 	@JsonProperty("gender")
 	private Gender gender;
 
-	//	@NotBlank(message = "gender cannot be blank")
 	@JsonProperty("maritalStatus")
 	private String maritalStatus;
 
@@ -97,4 +94,7 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 
 	@JsonProperty("patientRegistrations")
 	private List <PatientConsultationInput> patientRegistrations = new ArrayList <>();
+
+	@JsonProperty("patientAppointments")
+	private List <PatientAppointmentInput> patientAppointments = new ArrayList <>();
 }

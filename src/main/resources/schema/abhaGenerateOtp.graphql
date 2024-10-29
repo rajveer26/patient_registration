@@ -1,0 +1,13 @@
+type AbhaGenerateOtpResponse {
+
+    txnId: String
+    message: String
+}
+
+
+
+input AbhaGenerateOtpInput{
+
+    loginId: String!
+}
+

@@ -76,6 +76,10 @@ type Mutation {
     #business group
     createUpdateBusinessGroup(businessGroupInput: BusinessGroupInput!): BusinessGroupDB
 
+    #abha details
+    abhaGenerateOtp(abhaGenerateOtpInput: AbhaGenerateOtpInput!): AbhaGenerateOtpResponse
+    abhaValidateOtp(abhaValidateOtpInput: AbhaValidateOtpInput!): AbhaValidateOtpResponse
+
     #patient details
     savePatientDetails(patientDetailsInput: PatientDetailsInput): PatientDetailsDB
 

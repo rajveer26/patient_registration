@@ -21,15 +21,15 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "EMR_REGISTRATION_PATIENT_APPOINTMENTS")
+@Table(name = "EMR_REGISTRATION_PATIENT_CONSULTATIONS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientConsultationDB extends WhoseColumnsEntity implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_appointments")
-	@SequenceGenerator(name = "seq_patient_self_appointments", sequenceName = "seq_patient_self_appointments", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_registration_consultations")
+	@SequenceGenerator(name = "seq_patient_registration_consultations", sequenceName = "seq_patient_registration_consultations", allocationSize = 1)
 	@JsonProperty("patientConsultationId")
 	@Column(name = "patient_consultation_id")
 	private Long patientConsultationId;

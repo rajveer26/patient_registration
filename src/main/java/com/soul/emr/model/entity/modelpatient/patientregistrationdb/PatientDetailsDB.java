@@ -8,7 +8,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.enummaster.Gender;
-import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
 import com.soul.emr.model.entity.masterentity.masterdb.PrefixMasterDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
 import jakarta.persistence.*;
@@ -94,7 +93,7 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate registeredOn;
-	
+
 	@Column(name = "marital_status")
 	@JsonProperty("maritalStatus")
 	private String maritalStatus;
@@ -106,6 +105,14 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@Column(name = "esi_ip_number")
 	@JsonProperty("esiIpNumber")
 	private String esiIpNumber;
+
+	@Column(name = "abha_number")
+	@JsonProperty("abhaNumber")
+	private String abhaNumber;
+
+	@Column(name = "aadhaar_number")
+	@JsonProperty("aadhaarNumber")
+	private String aadhaarNumber;
 	
 	@JsonProperty("prefixMasterDB")
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -118,10 +125,15 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "emr_registration_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
 	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
-	
+
 	@JsonManagedReference
 	@JsonProperty("patientRegistrations")
 	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List <PatientConsultationDB> patientRegistrations = new ArrayList <>();
+	
+	@JsonManagedReference
+	@JsonProperty("patientAppointments")
+	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	private List <PatientAppointmentDB> patientAppointments = new ArrayList <>();
 	
 }

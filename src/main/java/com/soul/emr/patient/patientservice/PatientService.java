@@ -1,19 +1,32 @@
 package com.soul.emr.patient.patientservice;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.soul.emr.dao.EmrDaoInterf;
 import com.soul.emr.helper.HelperInterf;
+import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaGenerateOtpInput;
+import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaValidateOtpInput;
+import com.soul.emr.model.entity.abhaentity.response.AbhaGenerateOtpResponse;
+import com.soul.emr.model.entity.abhaentity.response.AbhaValidateOtpResponse;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
+import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
+import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientAppointmentInput;
 import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
 import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientConsultationInput;
+import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientAppointmentDB;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientConsultationDB;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -22,14 +35,16 @@ import java.util.*;
 public class PatientService implements PatientServiceInterf{
 	private final EmrDaoInterf daoInterf;
 	private final HelperInterf helperInterf;
+	private final Environment environment;
 
 	//logger
 	private final Logger logger = LogManager.getLogger(PatientService.class);
 
 	@Autowired
-	public PatientService(EmrDaoInterf daoInterf, HelperInterf helperInterf){
+	public PatientService(EmrDaoInterf daoInterf, HelperInterf helperInterf, Environment environment){
 		this.daoInterf            = daoInterf;
 		this.helperInterf         = helperInterf;
+		this.environment = environment;
 	}
 
 	//method to save patientDetails
@@ -201,6 +216,57 @@ public class PatientService implements PatientServiceInterf{
 			patientDetailsDB.setPatientRegistrations(patientConsultationDBS);
 		}
 
+
+		//checking patientAppointments is null or empty or not
+		if (!Objects.isNull(patientDetailsInput.getPatientAppointments()) && !patientDetailsInput.getPatientAppointments().isEmpty()) {
+
+			//extracting a list of PatientAppointmentDB object from patientDetailsDB
+			List <PatientAppointmentDB> patientAppointmentDBS = patientDetailsDB.getPatientAppointments();
+
+			//using for-each
+			patientDetailsInput.getPatientAppointments().forEach(patientAppointmentInput -> {
+
+				//checking if PatientAppointmentDB object is present inside an object or not
+				Optional <PatientAppointmentDB> existingPatientAppointment = patientAppointmentDBS.stream().filter(patientRegis -> !Objects.isNull(patientAppointmentInput.getPatientAppointmentId()) && Objects.equals(patientAppointmentInput.getPatientAppointmentId(), patientRegis.getPatientAppointmentId())).findFirst();
+				{
+					//if an object is present
+					if (existingPatientAppointment.isPresent()) {
+
+						//extracting index of an object
+						int index = patientAppointmentDBS.indexOf(existingPatientAppointment.get());
+
+						//extracting PatientAppointmentDB object from Optional
+						PatientAppointmentDB patientAppointmentDB = existingPatientAppointment.get();
+
+						//calling current class setPatientAppointment() method
+						PatientAppointmentDB updatedPatientAppointmentDB = this.setPatientAppointment(patientAppointmentDB, patientAppointmentInput);
+
+						//setting reference
+						updatedPatientAppointmentDB.setPatientDetailDB(patientDetailsDB);
+
+						//updating the object in a list
+						patientAppointmentDBS.set(index, updatedPatientAppointmentDB);
+					} else {
+
+						//crating a new PatientAppointmentDB object
+						PatientAppointmentDB newPatientAppointment = new PatientAppointmentDB();
+
+						//calling current class setPatientAppointment() method
+						PatientAppointmentDB updatedPatientAppointmentDB = this.setPatientAppointment(newPatientAppointment, patientAppointmentInput);
+
+						//setting reference
+						updatedPatientAppointmentDB.setPatientDetailDB(patientDetailsDB);
+
+						//adding an object in a list
+						patientAppointmentDBS.add(updatedPatientAppointmentDB);
+					}
+				}
+			});
+			//setting the object
+			patientDetailsDB.setPatientAppointments(patientAppointmentDBS);
+		}
+
+
 		//checking roles is null or empty or not
 		if (!Objects.isNull(patientDetailsInput.getRoles()) && !patientDetailsInput.getRoles().isEmpty()) {
 			//extracting RolesDB object from patientDetailsDB
@@ -291,6 +357,97 @@ public class PatientService implements PatientServiceInterf{
 
 		//returning patientConsultationDB
 		return patientConsultationDB;
+	}
+
+
+	//to set patient appointment
+	private PatientAppointmentDB setPatientAppointment(PatientAppointmentDB patientAppointmentDB, PatientAppointmentInput patientAppointmentInput) throws RuntimeException{
+
+		// Setting data members for patientConsultationDB from patientConsultationInput
+		patientAppointmentDB.setAppointmentDate(patientAppointmentInput.getAppointmentDate());
+		patientAppointmentDB.setIsActive(patientAppointmentInput.getIsActive());
+
+		//checking if departmentMasterInput is null or not
+		if (!Objects.isNull(patientAppointmentInput.getDepartmentMasterInput())) {
+
+			//checking if EmployeeInfoDB is present inside db or not
+			Optional <DepartmentMasterDB> departmentMasterDB = this.daoInterf.getDepartmentMasterById(patientAppointmentInput.getDepartmentMasterInput().getDepartmentMasterId());
+
+			//if object is present and code is DOCTOR_MASTER_ROLE_1
+			if (departmentMasterDB.isPresent()) {
+				patientAppointmentDB.setDepartmentMasterDB(departmentMasterDB.get());
+			} else {
+				throw new RuntimeException("PLEASE SELECT THE DEPARTMENT");
+			}
+		}
+
+		//checking if doctorInfoInput is null or not
+		if (!Objects.isNull(patientAppointmentInput.getEmployeeInfoInput())) {
+
+			//checking if EmployeeInfoDB is present inside db or not
+			Optional <EmployeeInfoDB> doctorInfoDB = this.daoInterf.getUserInfoById(patientAppointmentInput.getEmployeeInfoInput().getUserDetailsId());
+
+			//if object is present and code is DOCTOR_MASTER_ROLE_1
+			if (doctorInfoDB.isPresent() && doctorInfoDB.get().getRoles().stream().anyMatch(doct -> Objects.equals(doct.getRoleMaster().getRoleMasterCode().trim().toUpperCase(Locale.ENGLISH), "DOCTOR_MASTER_ROLE_1"))) {
+				patientAppointmentDB.setEmployeeInfoDB(doctorInfoDB.get());
+			} else {
+				throw new RuntimeException("PLEASE SELECT THE CONSULTANT");
+			}
+		}
+
+		//returning patientConsultationDB
+		return patientAppointmentDB;
+	}
+
+
+	//method to generate abha otp
+	@Override
+	public Optional<AbhaGenerateOtpResponse> abhaGenerateOtp(AbhaGenerateOtpInput abhaGenerateOtpInput){
+
+		try{
+
+			// Building URI for ABHA GENERATE OTP the patient
+			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(environment.getProperty("spring.org.externalAbhaBaseUrl") + "send_otp");
+
+			// POST API OF ABHA GENERATE OTP
+			ResponseEntity<Mono<String>> abhaGenerateOtpResponseEntity = helperInterf.postAPIMono(AbhaGenerateOtpInput.class, Optional.of(abhaGenerateOtpInput), uriComponentsBuilder);
+
+			// creating Gson instance
+			Gson gson = new GsonBuilder().create();
+
+			return Optional.ofNullable(gson.fromJson(String.valueOf(abhaGenerateOtpResponseEntity.getBody()), AbhaGenerateOtpResponse.class));
+
+		} catch(Exception e) {
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			throw new RuntimeException("FAILED ABHA GENERATE OTP");
+		}
+	}
+
+
+
+	//method to validate abha otp and fetch details
+	@Override
+	public Optional<AbhaValidateOtpResponse> abhaValidateOtp(AbhaValidateOtpInput abhaValidateOtpInput){
+
+		try{
+
+			// Building URI for ABHA VALIDATE OTP the patient
+			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(environment.getProperty("spring.org.externalAbhaBaseUrl") + "verify_otp");
+
+			// POST API OF ABHA VALIDATE OTP
+			ResponseEntity<Mono<String>> abhaValidateOtpResponseEntity = helperInterf.postAPIMono(AbhaValidateOtpInput.class, Optional.of(abhaValidateOtpInput), uriComponentsBuilder);
+
+			// creating Gson instance
+			Gson gson = new GsonBuilder().create();
+
+			return Optional.ofNullable(gson.fromJson(String.valueOf(abhaValidateOtpResponseEntity.getBody()), AbhaValidateOtpResponse.class));
+
+		} catch(Exception e) {
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			throw new RuntimeException("FAILED ABHA VALIDATE OTP");
+		}
 	}
 
 }

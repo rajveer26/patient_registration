@@ -2,6 +2,7 @@ package com.soul.emr.patient.patientservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.soul.emr.dao.EmrDaoInterf;
 import com.soul.emr.helper.HelperInterf;
@@ -406,6 +407,8 @@ public class PatientService implements PatientServiceInterf{
 
 		try{
 
+			System.out.println(abhaGenerateOtpInput);
+
 			// Building URI for ABHA GENERATE OTP the patient
 			UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(environment.getProperty("spring.org.externalAbhaBaseUrl") + "send_otp");
 
@@ -415,7 +418,15 @@ public class PatientService implements PatientServiceInterf{
 			// creating Gson instance
 			Gson gson = new GsonBuilder().create();
 
-			return Optional.ofNullable(gson.fromJson(String.valueOf(abhaGenerateOtpResponseEntity.getBody()), AbhaGenerateOtpResponse.class));
+			String responseBody = Objects.requireNonNull(abhaGenerateOtpResponseEntity.getBody()).block();
+            assert responseBody != null;
+            if (responseBody.startsWith("{")) {
+				return Optional.ofNullable(gson.fromJson(responseBody, AbhaGenerateOtpResponse.class));
+			} else {
+				throw new JsonSyntaxException("Unexpected response format: " + responseBody);
+			}
+
+
 
 		} catch(Exception e) {
 			logger.catching(e);
@@ -441,7 +452,13 @@ public class PatientService implements PatientServiceInterf{
 			// creating Gson instance
 			Gson gson = new GsonBuilder().create();
 
-			return Optional.ofNullable(gson.fromJson(String.valueOf(abhaValidateOtpResponseEntity.getBody()), AbhaValidateOtpResponse.class));
+			String responseBody = Objects.requireNonNull(abhaValidateOtpResponseEntity.getBody()).block();
+			assert responseBody != null;
+			if (responseBody.startsWith("{")) {
+				return Optional.ofNullable(gson.fromJson(responseBody, AbhaValidateOtpResponse.class));
+			} else {
+				throw new JsonSyntaxException("Unexpected response format: " + responseBody);
+			}
 
 		} catch(Exception e) {
 			logger.catching(e);

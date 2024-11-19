@@ -62,7 +62,7 @@ public class ABHAProfileResponse {
     private String districtName;
 
     @JsonProperty("ABHANumber")
-    private String abhaNumber;
+    private String ABHANumber;
 
     @JsonProperty("abhaStatus")
     private String abhaStatus;

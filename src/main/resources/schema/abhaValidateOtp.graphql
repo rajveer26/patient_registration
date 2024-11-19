@@ -4,10 +4,10 @@ type AbhaValidateOtpResponse {
     txnId: String
     message: String
     tokens: AbhaTokensResponse
-    abhaProfile: ABHAProfileResponse
+    ABHAProfile: ABHAProfileResponse
     isNew: Boolean
     imageBase64String: String
-    imageByte: [Binary]
+    imageByte: Binary
 }
 
 type AbhaTokensResponse {

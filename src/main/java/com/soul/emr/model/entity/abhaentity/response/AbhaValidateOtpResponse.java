@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
@@ -24,7 +22,7 @@ public class AbhaValidateOtpResponse {
     private AbhaTokensResponse tokens;
 
     @JsonProperty("ABHAProfile")
-    private ABHAProfileResponse abhaProfile;
+    private ABHAProfileResponse ABHAProfile;
 
     @JsonProperty("isNew")
     private boolean isNew;
@@ -33,5 +31,5 @@ public class AbhaValidateOtpResponse {
     private String imageBase64String;
 
     @JsonProperty("imageByte")
-    private List<Byte> imageByte;
+    private byte[] imageByte;
 }

@@ -17,7 +17,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB", "businessGroupDB", "communicationInfoDB"})
 @Entity
-@Table(name = "emr_organization_master")
+@Table(name = "organization_master")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

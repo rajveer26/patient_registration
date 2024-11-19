@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB", "PackageServiceMaster"})
+@EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB"})
 @Entity
 @Table(name = "department_master")
 @Data

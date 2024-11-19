@@ -13,6 +13,7 @@ import com.soul.emr.patient.patientservice.PatientServiceInterf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.GraphQlRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import reactor.core.publisher.Mono;
 
 import java.lang.classfile.Opcode;
 import java.util.Optional;
@@ -31,14 +32,14 @@ public class PatientController
 
 	//mutation to save patient details
 	@DgsMutation
-	public Optional<AbhaGenerateOtpResponse> abhaGenerateOtp(@InputArgument(value = "abhaGenerateOtpInput") AbhaGenerateOtpInput abhaGenerateOtpInput){
+	public Mono<AbhaGenerateOtpResponse> abhaGenerateOtp(@InputArgument(value = "abhaGenerateOtpInput") AbhaGenerateOtpInput abhaGenerateOtpInput){
 
 		return patientServiceInterf.abhaGenerateOtp(abhaGenerateOtpInput);
 	}
 
 	//mutation to save patient details
 	@DgsMutation
-	public Optional<AbhaValidateOtpResponse> abhaValidateOtp(@InputArgument(value = "abhaValidateOtpInput") AbhaValidateOtpInput abhaValidateOtpInput){
+	public Mono <AbhaValidateOtpResponse> abhaValidateOtp(@InputArgument(value = "abhaValidateOtpInput") AbhaValidateOtpInput abhaValidateOtpInput){
 
 		return patientServiceInterf.abhaValidateOtp(abhaValidateOtpInput);
 	}

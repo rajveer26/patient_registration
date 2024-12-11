@@ -694,7 +694,7 @@ public class EmployeeService implements EmployeeServiceInterf{
 		}
 		else
 		{
-			oneTimePasswordEntityDB.setIdentifier(String.valueOf(oneTimePasswordInput.getCommunicationInfoDB().getContactPersonMobileNumber()));
+			oneTimePasswordEntityDB.setIdentifier(String.valueOf(oneTimePasswordInput.getCommunicationInfoDB().getMobileNumber()));
 			
 		}
 		oneTimePasswordEntityDB.setValidUpto(oneTimePasswordInput.getValidUpto());

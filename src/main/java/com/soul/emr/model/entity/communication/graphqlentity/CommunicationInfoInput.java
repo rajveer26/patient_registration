@@ -60,19 +60,6 @@ public class CommunicationInfoInput extends WhoseColumnsEntity
 	@NotNull(message = "IS-ACTIVE-ID_CANNOT_BE_NULL")
 	@JsonProperty("isActive")
 	private Boolean isActive;
-
-	@JsonProperty("contactPersonRelation")
-	private String contactPersonRelation;
-
-	@JsonProperty("contactPersonName")
-	private String contactPersonName;
-	
-	@JsonProperty("contactPersonMobileNumber")
-	private String contactPersonMobileNumber;
-	
-	@JsonProperty("contactPersonEmailId")
-	@Email
-	private String contactPersonEmailId;
 	
 	@JsonProperty("employeeInfoDB")
 	private EmployeeInfoInput employeeInfoDB;

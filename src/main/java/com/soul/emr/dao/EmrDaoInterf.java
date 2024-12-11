@@ -59,6 +59,7 @@ public interface EmrDaoInterf{
 	Optional <PatientDetailsDB> getPatientDetailById(Long id);
 	PatientDetailsDB savePatientDetails(PatientDetailsDB patientDetailsDB);
 	Optional<PatientDetailsDB> getPatientDetailsByMrno(String mrno);
+	Optional<PatientDetailsDB> findDuplicatePatientDetails(String firstName, Optional<LocalDate> dob, Optional<String> aadhaarNumber, Optional<String> mobileNumber);
 	List<PatientSearch> searchPatient(String query);
 	long fetchPatientCountByDoctorNumberAndType(Optional<String> type, String doctorCode);
 	List<Object[]> fetchPatientCountBasedOnConsultationType(Optional <String> type, String doctorCode, LocalDate currentDate);

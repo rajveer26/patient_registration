@@ -83,6 +83,12 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 	@JsonProperty("esiIpNumber")
 	private String esiIpNumber;
 
+	@JsonProperty("abhaNumber")
+	private String abhaNumber;
+
+	@JsonProperty("aadhaarNumber")
+	private String aadhaarNumber;
+
 	@JsonProperty("prefixMasterDB")
 	private PrefixMasterInput prefixMasterDB;
 
@@ -94,6 +100,15 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 
 	@JsonProperty("patientRegistrations")
 	private List <PatientConsultationInput> patientRegistrations = new ArrayList <>();
+
+	@JsonProperty("patientEmergencyContacts")
+	private List <PatientEmergencyContactInput> patientEmergencyContacts = new ArrayList <>();
+
+	@JsonProperty("patientInsuranceDetails")
+	private List <patientInsuranceDetailInput> patientInsuranceDetails = new ArrayList <>();
+
+	@JsonProperty("patientMrnLinks")
+	private List <patientMrnLinkInput> patientMrnLinks = new ArrayList <>();
 
 	@JsonProperty("patientAppointments")
 	private List <PatientAppointmentInput> patientAppointments = new ArrayList <>();

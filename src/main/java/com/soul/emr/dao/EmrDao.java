@@ -634,6 +634,26 @@ public class EmrDao implements EmrDaoInterf{
 			throw new RuntimeException(e.getMessage());
 		}
 	}
+
+
+	//to fetch patient details dubpilcates
+	@Override
+	@Cacheable(cacheNames = {"patientDetailsDuplicates"}, key = "{#firstName, #dob, #aadhaarNumber, #mobileNumber}")
+	@Transactional(readOnly = true)
+	public Optional <PatientDetailsDB> findDuplicatePatientDetails(String firstName, Optional<LocalDate> dob, Optional<String> aadhaarNumber, Optional<String> mobileNumber){
+		try{
+			return patientDetailsRepository.findDuplicatePatientDetails(firstName,dob.orElse(null),aadhaarNumber.orElse(null),mobileNumber.orElse(null));
+		}
+
+		//catch block
+		catch(Exception e){
+
+			//logging exception
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			throw new RuntimeException(e.getMessage());
+		}
+	}
 	
 	//dao layer to search package-service master using gender and query
 	@Override

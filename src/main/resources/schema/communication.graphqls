@@ -80,10 +80,6 @@ type CommunicationInfoDB {
     mobileNumber: String!
     nationality: String!
     isActive: Boolean!
-    contactPersonRelation: String
-    contactPersonName: String
-    contactPersonMobileNumber: String
-    contactPersonEmailId: String
     employeeInfoDB: EmployeeInfoDB
     organizationGroupInput: OrganizationDB
     patientDetails: [PatientDetailsDB]
@@ -104,10 +100,6 @@ input CommunicationInfoInput {
     mobileNumber: String!
     nationality: String!
     isActive: Boolean!
-    contactPersonRelation: String
-    contactPersonName: String
-    contactPersonMobileNumber: String
-    contactPersonEmailId: String
     employeeInfoDB: EmployeeInfoInput
     organizationGroupInput: OrganizationGroupInput
     patientDetails: [PatientDetailsInput]
@@ -128,8 +120,4 @@ type CommunicationSearch {
     mobileNumber: String!
     nationality: String!
     isActive: Boolean!
-    contactPersonRelation: String
-    contactPersonName: String
-    contactPersonMobileNumber: String
-    contactPersonEmailId: String
 }

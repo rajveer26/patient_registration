@@ -71,7 +71,7 @@ public class HelperTest {
         MockitoAnnotations.openMocks(this);
 
          // Inject the WebClient mock into the Helper
-        helper = new Helper(webClient, authAbstract, emailSender, templateEngine, environment, mastersServiceInterf, emrDaoInterf);
+        helper = new Helper(webClient, authAbstract, emailSender, templateEngine, environment, emrDaoInterf, mastersServiceInterf);
     }
 
     @AfterEach

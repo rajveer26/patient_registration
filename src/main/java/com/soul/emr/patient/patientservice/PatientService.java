@@ -11,6 +11,7 @@ import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaValidateOtpInput;
 import com.soul.emr.model.entity.abhaentity.response.AbhaGenerateOtpResponse;
 import com.soul.emr.model.entity.abhaentity.response.AbhaValidateOtpResponse;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
+import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoInput;
 import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
@@ -30,6 +31,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service("patientService")
@@ -52,11 +54,18 @@ public class PatientService implements PatientServiceInterf{
 	@Override
 	public PatientDetailsDB savePatientDetails(PatientDetailsInput patientDetailsInput){
 		try{
-			//calling getPatientDetailsByMrno() method present in daoInterf
-			Optional <PatientDetailsDB> existingPatient = this.daoInterf.getPatientDetailsByMrno(patientDetailsInput.getMrno());
-			
+
+			Optional <PatientDetailsDB> existingPatientByDobAndName = this.daoInterf.findDuplicatePatientDetails(patientDetailsInput.getFirstName(), Optional.ofNullable(patientDetailsInput.getDob()), Optional.empty(), Optional.empty());
+			Optional <PatientDetailsDB> existingPatientByAadhaar = this.daoInterf.findDuplicatePatientDetails(null, Optional.empty(), Optional.ofNullable(patientDetailsInput.getAadhaarNumber()), Optional.empty());
+			Optional<PatientDetailsDB> existingPatientByMobileNumber = this.daoInterf.findDuplicatePatientDetails(null, Optional.empty(), Optional.empty(),
+                    patientDetailsInput.getCommunicationInfoDB()
+							.stream()
+							.map(CommunicationInfoInput::getMobileNumber)
+                            .findFirst()
+			);
+
 			//if an object is present
-			if (existingPatient.isPresent()) {
+			if (existingPatientByDobAndName.isPresent() || existingPatientByAadhaar.isPresent() || existingPatientByMobileNumber.isPresent()) {
 				//throwing a new RuntimeException
 				throw new RuntimeException("Patient already exists");
 			} else {
@@ -355,6 +364,12 @@ public class PatientService implements PatientServiceInterf{
 				throw new RuntimeException("PLEASE SELECT THE CONSULTANT");
 			}
 		}
+
+		//whose who is a column
+		patientConsultationDB.setCreatedBy(patientConsultationInput.getCreatedBy());
+		patientConsultationDB.setCreationTimeStamp(Objects.isNull(patientConsultationDB.getCreationTimeStamp()) ? LocalDateTime.now() : patientConsultationInput.getCreationTimeStamp());
+		patientConsultationDB.setUpdationTimeStamp(LocalDateTime.now());
+		patientConsultationDB.setUpdatedBy(patientConsultationInput.getUpdatedBy());
 		
 		//returning patientConsultationDB
 		return patientConsultationDB;
@@ -366,6 +381,7 @@ public class PatientService implements PatientServiceInterf{
 		
 		// Setting data members for patientConsultationDB from patientConsultationInput
 		patientAppointmentDB.setAppointmentDate(patientAppointmentInput.getAppointmentDate());
+		patientAppointmentDB.setAppointmentType(patientAppointmentInput.getAppointmentType());
 		patientAppointmentDB.setIsActive(patientAppointmentInput.getIsActive());
 		
 		//checking if departmentMasterInput is null or not
@@ -395,7 +411,13 @@ public class PatientService implements PatientServiceInterf{
 				throw new RuntimeException("PLEASE SELECT THE CONSULTANT");
 			}
 		}
-		
+
+		//whose who is a column
+		patientAppointmentDB.setCreatedBy(patientAppointmentInput.getCreatedBy());
+		patientAppointmentDB.setCreationTimeStamp(Objects.isNull(patientAppointmentDB.getCreationTimeStamp()) ? LocalDateTime.now() : patientAppointmentInput.getCreationTimeStamp());
+		patientAppointmentDB.setUpdationTimeStamp(LocalDateTime.now());
+		patientAppointmentDB.setUpdatedBy(patientAppointmentInput.getUpdatedBy());
+
 		//returning patientConsultationDB
 		return patientAppointmentDB;
 	}

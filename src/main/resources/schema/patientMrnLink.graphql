@@ -1,0 +1,13 @@
+type PatientMrnLink {
+    patientMrnLinkId: ID!
+    familyMrn: String
+    familyMrnRelation: String
+    patientDetailDB: PatientDetailsDB
+}
+
+input MrnLinkInput {
+    patientMrnLinkId: ID
+    familyMrn: String
+    familyMrnRelation: String
+    patientDetailsInput: PatientDetailsInput
+}

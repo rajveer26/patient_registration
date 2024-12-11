@@ -1,0 +1,19 @@
+type PatientEmergencyContact {
+    emergencyContactInfoId: ID!
+    contactPersonRelation: String
+    contactPersonName: String
+    contactPersonMobileNumber: String
+    contactPersonWhatsappNumber: String
+    contactPersonEmailId: String
+    patientDetailDB: PatientDetailsDB
+}
+
+input EmergencyContactInput {
+    emergencyContactInfoId: ID
+    contactPersonRelation: String
+    contactPersonName: String
+    contactPersonMobileNumber: String
+    contactPersonWhatsappNumber: String
+    contactPersonEmailId: String
+    patientDetailsInput: PatientDetailsInput
+}

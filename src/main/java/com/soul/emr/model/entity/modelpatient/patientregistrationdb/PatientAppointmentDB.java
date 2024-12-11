@@ -34,6 +34,10 @@ public class PatientAppointmentDB extends WhoseColumnsEntity implements Serializ
     @Column(name = "patient_appointment_id")
     private Long patientAppointmentId;
 
+    @JsonProperty("appointmentType")
+    @Column(name = "appointment_type")
+    private String appointmentType;
+
     @Column(name = "appointment_date")
     @JsonProperty("appointmentDate")
     @JsonSerialize(using = LocalDateSerializer.class)

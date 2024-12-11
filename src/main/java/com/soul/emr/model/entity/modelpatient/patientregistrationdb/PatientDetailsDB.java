@@ -37,11 +37,10 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_registration")
-	@SequenceGenerator(name = "seq_patient_self_registration", sequenceName = "seq_patient_self_registration", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_emr_patient_registration")
+	@SequenceGenerator(name = "seq_emr_patient_registration", sequenceName = "seq_emr_patient_registration", allocationSize = 1)
 	@JsonProperty("patientId")
 	@Column(name = "patient_Id")
 	private Long patientId;
@@ -130,6 +129,21 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonProperty("patientRegistrations")
 	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	private List <PatientConsultationDB> patientRegistrations = new ArrayList <>();
+
+	@JsonManagedReference
+	@JsonProperty("patientEmergencyContacts")
+	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	private List <PatientEmergencyContacts> patientEmergencyContacts = new ArrayList <>();
+
+	@JsonManagedReference
+	@JsonProperty("patientInsuranceDetails")
+	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	private List <PatientInsuranceDB> patientInsuranceDetails = new ArrayList <>();
+
+	@JsonManagedReference
+	@JsonProperty("patientMrnLinks")
+	@OneToMany(mappedBy = "patientDetailDB", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+	private List <PatientMrnLinkDB> patientMrnLinks = new ArrayList <>();
 	
 	@JsonManagedReference
 	@JsonProperty("patientAppointments")

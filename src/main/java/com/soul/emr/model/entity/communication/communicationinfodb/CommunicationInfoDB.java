@@ -93,23 +93,6 @@ public class CommunicationInfoDB extends WhoseColumnsEntity implements Serializa
 	@Column(name = "is_active", nullable = false)
 	private Boolean isActive;
 
-	@JsonProperty("contactPersonRelation")
-	@Column(name = "contact_Person_Relation")
-	private String contactPersonRelation;
-
-	@JsonProperty("contactPersonName")
-	@Column(name = "contact_Person_Name", length = 50)
-	private String contactPersonName;
-
-	@JsonProperty("contactPersonMobileNumber")
-	@Column(name = "contact_Person_Mobile_Number")
-	private String contactPersonMobileNumber;
-
-	@JsonProperty("contactPersonEmailId")
-	@Email
-	@Column(name = "contact_Person_email_id", length = 50)
-	private String contactPersonEmailId;
-
 	@JsonBackReference
 	@JsonProperty("employeeInfoDB")
 	@ManyToOne(fetch = FetchType.LAZY)

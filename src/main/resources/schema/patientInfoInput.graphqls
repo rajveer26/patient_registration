@@ -65,6 +65,10 @@ type PatientDetailsDB {
     prefixMasterDB: PrefixMasterDB
     communicationInfoDB: [CommunicationInfoDB]
     patientRegistrations: [PatientConsultationDB]
+    patientEmergencyContacts: [PatientEmergencyContact]
+    patientInsuranceDetails: [PatientInsurance]
+    patientMrnLinks: [PatientMrnLink]
+    patientAppointments: [PatientAppointment]
     roles: [RolesDB]
 }
 
@@ -87,6 +91,10 @@ input PatientDetailsInput {
     prefixMasterDB: PrefixMasterInput
     communicationInfoDB: [CommunicationInfoInput]
     patientRegistrations: [PatientConsultationInput]
+    patientEmergencyContacts: [EmergencyContactInput]
+    patientInsuranceDetails: [InsuranceInput]
+    patientMrnLinks: [MrnLinkInput]
+    patientAppointments: [AppointmentInput]
     roles: [RoleInput]
 }
 
@@ -100,4 +108,5 @@ type PatientSearch {
     patientImage: String
     registeredOn: LocalDate
     communicationInfoDB: [CommunicationSearch]
+
 }

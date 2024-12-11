@@ -32,6 +32,9 @@ public class PatientAppointmentInput extends WhoseColumnsEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate appointmentDate;
 
+    @JsonProperty("appointmentType")
+    private String appointmentType;
+
     @JsonProperty("isActive")
     private Boolean isActive;
 

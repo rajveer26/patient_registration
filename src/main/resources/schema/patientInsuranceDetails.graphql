@@ -1,0 +1,19 @@
+type PatientInsurance {
+    patientInsuranceInfoId: ID!
+    insuranceType: String
+    insuranceName: String
+    insuranceNumber: String
+    insuranceValidFrom: String
+    insuranceValidTo: String
+    patientDetailDB: PatientDetailsDB
+}
+
+input InsuranceInput {
+    patientInsuranceInfoId: ID
+    insuranceType: String
+    insuranceName: String
+    insuranceNumber: String
+    insuranceValidFrom: String
+    insuranceValidTo: String
+    patientDetailsInput: PatientDetailsInput
+}

@@ -9,13 +9,8 @@ import com.soul.emr.masters.service.MastersServiceInterf;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoInput;
 import com.soul.emr.model.entity.email.EmailEntity;
-import com.soul.emr.model.entity.masterentity.graphqlentity.PrefixMasterInput;
-import com.soul.emr.model.entity.masterentity.masterdb.PrefixMasterDB;
-import com.soul.emr.model.entity.masterentity.masterdb.RoleMasterDB;
 import com.soul.emr.model.entity.modelemployee.graphqlentity.RoleInput;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
-import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
-import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,21 +54,21 @@ public class Helper implements HelperInterf
 	private final JavaMailSender emailSender;
 	private final TemplateEngine templateEngine;
 	private final Environment environment;
-	private final MastersServiceInterf mastersServiceInterf;
 	private final EmrDaoInterf emrDaoInterf;
+	private final MastersServiceInterf mastersServiceInterf;
 
 
 	@Autowired
-	public Helper(WebClient webClient, AuthAbstract authAbstract, JavaMailSender emailSender, TemplateEngine templateEngine, Environment environment, MastersServiceInterf mastersServiceInterf, EmrDaoInterf emrDaoInterf){
+	public Helper(WebClient webClient, AuthAbstract authAbstract, JavaMailSender emailSender, TemplateEngine templateEngine, Environment environment, EmrDaoInterf emrDaoInterf, MastersServiceInterf mastersServiceInterf){
 		super();
 		this.webClient        = webClient;
 		this.authAbstract     = authAbstract;
 		this.emailSender = emailSender;
 		this.templateEngine = templateEngine;
 		this.environment      = environment;
-		this.mastersServiceInterf = mastersServiceInterf;
 		this.emrDaoInterf = emrDaoInterf;
-	}
+        this.mastersServiceInterf = mastersServiceInterf;
+    }
 
 	// Method to Generate a random OTP of 6 Digits
 	@Override
@@ -480,11 +475,6 @@ public class Helper implements HelperInterf
 		communicationInfoExisting.setMobileNumber(communicationJson.getMobileNumber());
 		communicationInfoExisting.setNationality(communicationJson.getNationality());
 		communicationInfoExisting.setIsActive(communicationJson.getIsActive());
-		communicationInfoExisting.setContactPersonRelation(communicationJson.getContactPersonRelation());
-		communicationInfoExisting.setContactPersonName(communicationJson.getContactPersonName());
-		communicationInfoExisting.setContactPersonMobileNumber(communicationJson.getContactPersonMobileNumber());
-		communicationInfoExisting.setContactPersonEmailId(communicationJson.getContactPersonEmailId());
-
 
 		//whose who is a column
 		communicationInfoExisting.setCreatedBy(Objects.isNull(communicationInfoExisting.getCreatedBy()) ? communicationJson.getCreatedBy() : communicationInfoExisting.getCreatedBy());

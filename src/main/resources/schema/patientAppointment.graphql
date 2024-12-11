@@ -1,0 +1,19 @@
+type PatientAppointment {
+    patientAppointmentId: ID!
+    appointmentType: String
+    appointmentDate: String
+    isActive: Boolean
+    department: DepartmentMasterDB
+    doctor: EmployeeInfoDB
+    patientDetailDB: PatientDetailsDB
+}
+
+input AppointmentInput {
+    patientAppointmentId: ID
+    appointmentType: String
+    appointmentDate: String
+    isActive: Boolean
+    department: DepartmentMasterInput
+    doctor: EmployeeInfoInput
+    patientDetailsInput: PatientDetailsInput
+}

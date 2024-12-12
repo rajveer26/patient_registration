@@ -15,12 +15,8 @@ import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoIn
 import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
-import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientAppointmentInput;
-import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
-import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientConsultationInput;
-import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientAppointmentDB;
-import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientConsultationDB;
-import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
+import com.soul.emr.model.entity.modelpatient.graphqlentity.*;
+import com.soul.emr.model.entity.modelpatient.patientregistrationdb.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -225,6 +221,156 @@ public class PatientService implements PatientServiceInterf{
 			//setting the object
 			patientDetailsDB.setPatientRegistrations(patientConsultationDBS);
 		}
+
+
+		//checking patientEmergencyContacts is null or empty or not
+		if (!Objects.isNull(patientDetailsInput.getPatientEmergencyContacts()) && !patientDetailsInput.getPatientEmergencyContacts().isEmpty()) {
+
+			//extracting a list of PatientEmergencyContactDB object from patientDetailsDB
+			List <PatientEmergencyContacts> patientEmergencyContactDBS = patientDetailsDB.getPatientEmergencyContacts();
+
+			//using for-each
+			patientDetailsInput.getPatientEmergencyContacts().forEach(patientEmergencyContactInput -> {
+
+				//checking if PatientEmergencyContactDB object is present inside an object or not
+				Optional <PatientEmergencyContacts> existingPatientEmergencyContact = patientEmergencyContactDBS.stream().filter(patientRegis -> !Objects.isNull(patientEmergencyContactInput.getEmergencyContactInfoId()) && Objects.equals(patientEmergencyContactInput.getEmergencyContactInfoId(), patientRegis.getEmergencyContactInfoId())).findFirst();
+				{
+					//if an object is present
+					if (existingPatientEmergencyContact.isPresent()) {
+
+						//extracting index of an object
+						int index = patientEmergencyContactDBS.indexOf(existingPatientEmergencyContact.get());
+
+						//extracting PatientEmergencyContactDB object from Optional
+						PatientEmergencyContacts patientEmergencyContactDB = existingPatientEmergencyContact.get();
+
+						//calling current class setPatientEmergencyContact() method
+						PatientEmergencyContacts updatedPatientEmergencyContactDB = this.setPatientEmergencyContact(patientEmergencyContactDB, patientEmergencyContactInput);
+
+						//setting reference
+						updatedPatientEmergencyContactDB.setPatientDetailDB(patientDetailsDB);
+
+						//updating the object in a list
+						patientEmergencyContactDBS.set(index, updatedPatientEmergencyContactDB);
+					} else {
+
+						//crating a new PatientEmergencyContactDB object
+						PatientEmergencyContacts newPatientEmergencyContact = new PatientEmergencyContacts();
+
+						//calling current class setPatientEmergencyContact() method
+						PatientEmergencyContacts updatedPatientEmergencyContactDB = this.setPatientEmergencyContact(newPatientEmergencyContact, patientEmergencyContactInput);
+
+						//setting reference
+						updatedPatientEmergencyContactDB.setPatientDetailDB(patientDetailsDB);
+
+						//adding an object in a list
+						patientEmergencyContactDBS.add(updatedPatientEmergencyContactDB);
+					}
+				}
+			});
+			//setting the object
+			patientDetailsDB.setPatientEmergencyContacts(patientEmergencyContactDBS);
+		}
+
+
+		//checking patientInsuranceDetails is null or empty or not
+		if (!Objects.isNull(patientDetailsInput.getPatientInsuranceDetails()) && !patientDetailsInput.getPatientInsuranceDetails().isEmpty()) {
+
+			//extracting a list of patientInsuranceDB object from patientDetailsDB
+			List <PatientInsuranceDB> patientInsuranceDBS = patientDetailsDB.getPatientInsuranceDetails();
+
+			//using for-each
+			patientDetailsInput.getPatientInsuranceDetails().forEach(patientInsuranceInput -> {
+
+				//checking if patientInsuranceDB object is present inside an object or not
+				Optional <PatientInsuranceDB> existingPatientInsurance = patientInsuranceDBS.stream().filter(patientInsurance -> !Objects.isNull(patientInsuranceInput.getPatientInsuranceInfoId()) && Objects.equals(patientInsuranceInput.getPatientInsuranceInfoId(), patientInsurance.getPatientInsuranceInfoId())).findFirst();
+				{
+					//if an object is present
+					if (existingPatientInsurance.isPresent()) {
+
+						//extracting index of an object
+						int index = patientInsuranceDBS.indexOf(existingPatientInsurance.get());
+
+						//extracting patientInsuranceDB object from Optional
+						PatientInsuranceDB patientInsuranceDB = existingPatientInsurance.get();
+
+						//calling current class setPatientInsuranceDetails() method
+						PatientInsuranceDB updatedPatientInsuranceDB = this.setPatientInsuranceDetails(patientInsuranceDB, patientInsuranceInput);
+
+						//setting reference
+						updatedPatientInsuranceDB.setPatientDetailDB(patientDetailsDB);
+
+						//updating the object in a list
+						patientInsuranceDBS.set(index, updatedPatientInsuranceDB);
+					} else {
+
+						//crating a new patientInsuranceDB object
+						PatientInsuranceDB newPatientInsurance = new PatientInsuranceDB();
+
+						//calling current class setPatientInsuranceDetails() method
+						PatientInsuranceDB updatedPatientInsuranceDB = this.setPatientInsuranceDetails(newPatientInsurance, patientInsuranceInput);
+
+						//setting reference
+						updatedPatientInsuranceDB.setPatientDetailDB(patientDetailsDB);
+
+						//adding an object in a list
+						patientInsuranceDBS.add(updatedPatientInsuranceDB);
+					}
+				}
+			});
+			//setting the object
+			patientDetailsDB.setPatientInsuranceDetails(patientInsuranceDBS);
+		}
+
+
+		//checking patientMrnLinks is null or empty or not
+		if (!Objects.isNull(patientDetailsInput.getPatientMrnLinks()) && !patientDetailsInput.getPatientMrnLinks().isEmpty()) {
+
+			//extracting a list of patientInsuranceDB object from patientDetailsDB
+			List <PatientMrnLinkDB> patientMrnLinkDBS = patientDetailsDB.getPatientMrnLinks();
+
+			//using for-each
+			patientDetailsInput.getPatientMrnLinks().forEach(patientMrnLinkInput -> {
+
+				//checking if patientInsuranceDB object is present inside an object or not
+				Optional <PatientMrnLinkDB> existingPatientMrnLink = patientMrnLinkDBS.stream().filter(patientMrnLink -> !Objects.isNull(patientMrnLinkInput.getPatientMrnLinkId()) && Objects.equals(patientMrnLinkInput.getPatientMrnLinkId(), patientMrnLink.getPatientMrnLinkId())).findFirst();
+				{
+					//if an object is present
+					if (existingPatientMrnLink.isPresent()) {
+
+						//extracting index of an object
+						int index = patientMrnLinkDBS.indexOf(existingPatientMrnLink.get());
+
+						//extracting patientInsuranceDB object from Optional
+						PatientMrnLinkDB patientMrnLinkDB = existingPatientMrnLink.get();
+
+						//calling current class setPatientInsuranceDetails() method
+						PatientMrnLinkDB updatedPatientMrnLinkDB = this.setPatientMrnLinkDetails(patientMrnLinkDB, patientMrnLinkInput);
+
+						//setting reference
+						updatedPatientMrnLinkDB.setPatientDetailDB(patientDetailsDB);
+
+						//updating the object in a list
+						patientMrnLinkDBS.set(index, updatedPatientMrnLinkDB);
+					} else {
+
+						//crating a new patientInsuranceDB object
+						PatientMrnLinkDB newPatientMrnLink = new PatientMrnLinkDB();
+
+						//calling current class setPatientInsuranceDetails() method
+						PatientMrnLinkDB updatedPatientMrnLinkDB = this.setPatientMrnLinkDetails(newPatientMrnLink, patientMrnLinkInput);
+
+						//setting reference
+						updatedPatientMrnLinkDB.setPatientDetailDB(patientDetailsDB);
+
+						//adding an object in a list
+						patientMrnLinkDBS.add(updatedPatientMrnLinkDB);
+					}
+				}
+			});
+			//setting the object
+			patientDetailsDB.setPatientMrnLinks(patientMrnLinkDBS);
+		}
 		
 		
 		//checking patientAppointments is null or empty or not
@@ -373,6 +519,60 @@ public class PatientService implements PatientServiceInterf{
 		
 		//returning patientConsultationDB
 		return patientConsultationDB;
+	}
+
+	private PatientEmergencyContacts setPatientEmergencyContact(PatientEmergencyContacts patientEmergencyContactDB, PatientEmergencyContactInput patientEmergencyContactInput) throws RuntimeException {
+
+		// Set values from the input object to the database object
+		patientEmergencyContactDB.setEmergencyContactInfoId(patientEmergencyContactInput.getEmergencyContactInfoId());
+		patientEmergencyContactDB.setContactPersonRelation(patientEmergencyContactInput.getContactPersonRelation());
+		patientEmergencyContactDB.setContactPersonName(patientEmergencyContactInput.getContactPersonName());
+		patientEmergencyContactDB.setContactPersonMobileNumber(patientEmergencyContactInput.getContactPersonMobileNumber());
+		patientEmergencyContactDB.setContactPersonWhatsappNumber(patientEmergencyContactInput.getContactPersonWhatsappNumber());
+		patientEmergencyContactDB.setContactPersonEmailId(patientEmergencyContactInput.getContactPersonEmailId());
+
+		// whose who is a column
+		patientEmergencyContactDB.setCreatedBy(patientEmergencyContactInput.getCreatedBy());
+		patientEmergencyContactDB.setCreationTimeStamp(Objects.isNull(patientEmergencyContactDB.getCreationTimeStamp()) ? LocalDateTime.now() : patientEmergencyContactInput.getCreationTimeStamp());
+		patientEmergencyContactDB.setUpdationTimeStamp(LocalDateTime.now());
+		patientEmergencyContactDB.setUpdatedBy(patientEmergencyContactInput.getUpdatedBy());
+
+		return patientEmergencyContactDB;
+	}
+
+	private PatientInsuranceDB setPatientInsuranceDetails(PatientInsuranceDB patientInsuranceDB, PatientInsuranceDetailInput patientInsuranceDetailInput) throws RuntimeException {
+
+		// Map input properties to the database entity
+		patientInsuranceDB.setPatientInsuranceInfoId(patientInsuranceDetailInput.getPatientInsuranceInfoId());
+		patientInsuranceDB.setInsuranceType(patientInsuranceDetailInput.getInsuranceType());
+		patientInsuranceDB.setInsuranceName(patientInsuranceDetailInput.getInsuranceName());
+		patientInsuranceDB.setInsuranceNumber(patientInsuranceDetailInput.getInsuranceNumber());
+		patientInsuranceDB.setInsuranceValidFrom(patientInsuranceDetailInput.getInsuranceValidFrom());
+		patientInsuranceDB.setInsuranceValidTo(patientInsuranceDetailInput.getInsuranceValidTo());
+
+		// whose who is a column
+		patientInsuranceDB.setCreatedBy(patientInsuranceDetailInput.getCreatedBy());
+		patientInsuranceDB.setCreationTimeStamp(Objects.isNull(patientInsuranceDB.getCreationTimeStamp()) ? LocalDateTime.now() : patientInsuranceDetailInput.getCreationTimeStamp());
+		patientInsuranceDB.setUpdationTimeStamp(LocalDateTime.now());
+		patientInsuranceDB.setUpdatedBy(patientInsuranceDetailInput.getUpdatedBy());
+
+		return patientInsuranceDB;
+	}
+
+	private PatientMrnLinkDB setPatientMrnLinkDetails(PatientMrnLinkDB patientMrnLinkDB, PatientMrnLinkInput patientMrnLinkInput) throws RuntimeException{
+
+		// Map input properties to the database entity
+		patientMrnLinkDB.setPatientMrnLinkId(patientMrnLinkInput.getPatientMrnLinkId());
+		patientMrnLinkDB.setFamilyMrn(patientMrnLinkInput.getFamilyMrn());
+		patientMrnLinkDB.setFamilyMrnRelation(patientMrnLinkInput.getFamilyMrnRelation());
+
+		// whose who is a column
+		patientMrnLinkDB.setCreatedBy(patientMrnLinkInput.getCreatedBy());
+		patientMrnLinkDB.setCreationTimeStamp(Objects.isNull(patientMrnLinkDB.getCreationTimeStamp()) ? LocalDateTime.now() : patientMrnLinkInput.getCreationTimeStamp());
+		patientMrnLinkDB.setUpdationTimeStamp(LocalDateTime.now());
+		patientMrnLinkDB.setUpdatedBy(patientMrnLinkInput.getUpdatedBy());
+
+		return patientMrnLinkDB;
 	}
 	
 	

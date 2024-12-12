@@ -1,6 +1,7 @@
 package com.soul.emr.model.entity.modelpatient.graphqlentity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class PatientEmergencyContactInput {
+public class PatientEmergencyContactInput extends WhoseColumnsEntity {
 
     @JsonProperty("emergencyContactInfoId")
     private Long emergencyContactInfoId;

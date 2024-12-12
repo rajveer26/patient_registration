@@ -105,10 +105,10 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 	private List <PatientEmergencyContactInput> patientEmergencyContacts = new ArrayList <>();
 
 	@JsonProperty("patientInsuranceDetails")
-	private List <patientInsuranceDetailInput> patientInsuranceDetails = new ArrayList <>();
+	private List <PatientInsuranceDetailInput> patientInsuranceDetails = new ArrayList <>();
 
 	@JsonProperty("patientMrnLinks")
-	private List <patientMrnLinkInput> patientMrnLinks = new ArrayList <>();
+	private List <PatientMrnLinkInput> patientMrnLinks = new ArrayList <>();
 
 	@JsonProperty("patientAppointments")
 	private List <PatientAppointmentInput> patientAppointments = new ArrayList <>();

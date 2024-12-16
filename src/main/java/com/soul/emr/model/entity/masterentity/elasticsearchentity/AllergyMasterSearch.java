@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 
@@ -22,6 +23,7 @@ public class AllergyMasterSearch extends WhoseColumnsEntity implements Serializa
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	@JsonProperty("allergyMasterId")
 	@Field(name = "allergy_master_id")
 	private Long allergyMasterId;

@@ -22,8 +22,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Base64;
 @Configuration
-@EnableReactiveElasticsearchRepositories(basePackages = "com.soul.emr.model.repository.elasticsearchrepository")
-@EnableElasticsearchRepositories(basePackages = "com.soul.emr.model.repository.elasticsearchrepository")
 public class ElasticSearConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.client.certificate}")
     private String certificateBase64;

@@ -14,7 +14,6 @@ import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetai
 import com.soul.emr.patient.patientservice.PatientServiceInterf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.GraphQlRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import reactor.core.publisher.Mono;
 

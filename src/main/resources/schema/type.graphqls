@@ -82,5 +82,13 @@ type Mutation {
 
     #patient details
     savePatientDetails(patientDetailsInput: PatientDetailsInput): PatientDetailsDB
+    getAllPatientDetails: [PatientDetailsDB]
+
+
+    # temporary masters
+    getAllGenders: [Gender]
+    getAllPatientTypes: [PatientType]
+    getAllMaritalStatus: [MaritalStatus]
+    getAllRelationship: [Relationship]
 
 }

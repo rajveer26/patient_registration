@@ -686,6 +686,22 @@ public class PatientService implements PatientServiceInterf{
 			throw new RuntimeException("FAILED ABHA VALIDATE OTP");
 		});
 	}
+
+
+	@Override
+	public List<PatientDetailsDB> getAllPatientDetails(){
+
+		try {
+
+			return Optional.ofNullable(daoInterf.getAllPatientDetails()).orElse(new ArrayList<>());
+
+		}
+		catch (Exception e) {
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			throw new RuntimeException("FAILED FETCHING PATIENT DETAILS");
+		}
+	}
 	
 }
 

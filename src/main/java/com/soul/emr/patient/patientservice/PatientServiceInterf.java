@@ -8,6 +8,7 @@ import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PatientServiceInterf
@@ -18,4 +19,5 @@ public interface PatientServiceInterf
 	
 	Mono <AbhaValidateOtpResponse> abhaValidateOtp(AbhaValidateOtpInput abhaValidateOtpInput);
 
+	List<PatientDetailsDB> getAllPatientDetails();
 }

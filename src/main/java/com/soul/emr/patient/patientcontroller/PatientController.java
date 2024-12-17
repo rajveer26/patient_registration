@@ -2,15 +2,13 @@ package com.soul.emr.patient.patientcontroller;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsMutation;
+import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
 import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaGenerateOtpInput;
 import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaValidateOtpInput;
 import com.soul.emr.model.entity.abhaentity.response.AbhaGenerateOtpResponse;
 import com.soul.emr.model.entity.abhaentity.response.AbhaValidateOtpResponse;
-import com.soul.emr.model.entity.enummaster.Gender;
-import com.soul.emr.model.entity.enummaster.MaritalStatus;
-import com.soul.emr.model.entity.enummaster.PatientType;
-import com.soul.emr.model.entity.enummaster.Relationship;
+import com.soul.emr.model.entity.enummaster.*;
 import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import com.soul.emr.patient.patientservice.PatientServiceInterf;
@@ -20,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 
 @GraphQlRepository
@@ -55,30 +54,35 @@ public class PatientController
 		return patientServiceInterf.savePatientDetails(patientDetailsInput);
 	}
 
-	@DgsMutation
+	@DgsQuery
 	public List<PatientDetailsDB> getAllPatientDetails(){
 
 		return patientServiceInterf.getAllPatientDetails();
 	}
 
-	@DgsMutation
-	public ResponseEntity<Gender[]> getAllGenders() {
-		return ResponseEntity.ok(Gender.values());
+	@DgsQuery
+	public List<Gender> getAllGenders() {
+		return Arrays.asList(Gender.values());
 	}
 
-	@DgsMutation
-	public ResponseEntity<PatientType[]> getAllPatientTypes() {
-		return ResponseEntity.ok(PatientType.values());
+	@DgsQuery
+	public List<PatientType> getAllPatientTypes() {
+		return Arrays.asList(PatientType.values());
 	}
 
-	@DgsMutation
-	public ResponseEntity<MaritalStatus[]> getAllMaritalStatus() {
-		return ResponseEntity.ok(MaritalStatus.values());
+	@DgsQuery
+	public List<MaritalStatus> getAllMaritalStatus() {
+		return Arrays.asList(MaritalStatus.values());
 	}
 
-	@DgsMutation
-	public ResponseEntity<Relationship[]> getAllRelationship() {
-		return ResponseEntity.ok(Relationship.values());
+	@DgsQuery
+	public List<Relationship> getAllRelationship() {
+		return Arrays.asList(Relationship.values());
 	}
-	
+
+	@DgsQuery
+	public List<InsuranceType> getAllInsuranceType() {
+		return Arrays.asList(InsuranceType.values());
+	}
+
 }

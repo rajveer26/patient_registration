@@ -50,6 +50,17 @@ type Query {
     fetchAllPrefixMaster(isActive: Boolean): [PrefixMasterSearch]
     fetchPrefixMasterUsingId(id: Long): PrefixMasterDB
 
+
+    getAllPatientDetails: [PatientDetailsDB]
+
+
+    # temporary masters
+    getAllGenders: [Gender]
+    getAllPatientTypes: [PatientType]
+    getAllMaritalStatus: [MaritalStatus]
+    getAllRelationship: [Relationship]
+    getAllInsuranceType: [InsuranceType]
+
 }
 
 # MUTATION
@@ -82,13 +93,5 @@ type Mutation {
 
     #patient details
     savePatientDetails(patientDetailsInput: PatientDetailsInput): PatientDetailsDB
-    getAllPatientDetails: [PatientDetailsDB]
-
-
-    # temporary masters
-    getAllGenders: [Gender]
-    getAllPatientTypes: [PatientType]
-    getAllMaritalStatus: [MaritalStatus]
-    getAllRelationship: [Relationship]
 
 }

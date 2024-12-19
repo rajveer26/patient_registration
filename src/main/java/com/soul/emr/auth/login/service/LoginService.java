@@ -2,7 +2,7 @@ package com.soul.emr.auth.login.service;
 
 import com.google.common.base.Strings;
 import com.soul.emr.auth.security.JwtTokenProvider;
-import com.soul.emr.dao.EmrDaoInterf;
+import com.soul.emr.dao.PatientDaoInterf;
 import com.soul.emr.model.entity.modelemployee.registrationdb.UserCredentialsDB;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,15 +25,15 @@ public class LoginService implements LoginServiceInterf
 {
 
 	private final JwtTokenProvider jwtTokenProvider;
-	private final EmrDaoInterf emrDaoInterf;
+	private final PatientDaoInterf patientDaoInterf;
 	private final AuthenticationManager authenticationManager;
 	
 	
 	@Autowired
-	public LoginService(JwtTokenProvider jwtTokenProvider, EmrDaoInterf emrDaoInterf, AuthenticationManager authenticationManager){
+	public LoginService(JwtTokenProvider jwtTokenProvider, PatientDaoInterf patientDaoInterf, AuthenticationManager authenticationManager){
 		super();
-		this.jwtTokenProvider = jwtTokenProvider;
-		this.emrDaoInterf = emrDaoInterf;
+		this.jwtTokenProvider      = jwtTokenProvider;
+		this.patientDaoInterf      = patientDaoInterf;
 		this.authenticationManager = authenticationManager;
 	}
 	
@@ -46,7 +46,7 @@ public class LoginService implements LoginServiceInterf
 		HashMap <String, Object> response = new HashMap<>();
 		try{
 			
-			Optional<UserCredentialsDB> userCredentialsDB = emrDaoInterf.getUserCredentials(username);
+			Optional<UserCredentialsDB> userCredentialsDB = patientDaoInterf.getUserCredentials(username);
 			
 			if(userCredentialsDB.isPresent()){
 				

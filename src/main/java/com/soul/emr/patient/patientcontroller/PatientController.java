@@ -8,17 +8,22 @@ import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaGenerateOtpInput;
 import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaValidateOtpInput;
 import com.soul.emr.model.entity.abhaentity.response.AbhaGenerateOtpResponse;
 import com.soul.emr.model.entity.abhaentity.response.AbhaValidateOtpResponse;
+import com.soul.emr.model.entity.elasticsearchentity.PatientSearch;
 import com.soul.emr.model.entity.enummaster.*;
 import com.soul.emr.model.entity.modelpatient.graphqlentity.PatientDetailsInput;
+import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientConsultationDB;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import com.soul.emr.patient.patientservice.PatientServiceInterf;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.graphql.data.GraphQlRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @GraphQlRepository
 @DgsComponent
@@ -83,5 +88,25 @@ public class PatientController
 	public List<InsuranceType> getAllInsuranceType() {
 		return Arrays.asList(InsuranceType.values());
 	}
-
+	
+	//query to fetch patient registration
+	@DgsQuery
+	public Page <PatientConsultationDB> fetchPatientConsultation(@InputArgument(value = "doctorCode") String doctorCode, @InputArgument(value = "type") String type, @InputArgument("page") Integer page, @InputArgument(value = "size") Integer size, @InputArgument(value = "date") Optional <LocalDate> date, @InputArgument(value = "consultationStatus") String consultationStatus)
+	{
+		return patientServiceInterf.fetchPatientConsultation(doctorCode, type, page, size, date, consultationStatus);
+	}
+	
+	//query to fetch patient registration
+	@DgsQuery
+	public long patientCountBasedOnTypeAndDoctorCode(@InputArgument(value = "type") Optional<String> type, @InputArgument(value = "doctorCode") String doctorCode)
+	{
+		return patientServiceInterf.patientCountBasedOnTypeAndDoctorCode(type, doctorCode);
+	}
+	
+	@DgsQuery
+	public List <PatientSearch> patientSearchList(@InputArgument(value = "patientSearchQuery") String patientSearchQuery){
+		
+		return patientServiceInterf.searchPatient(patientSearchQuery);
+	}
+	
 }

@@ -94,7 +94,7 @@ input PatientDetailsInput {
     patientEmergencyContacts: [EmergencyContactInput]
     patientInsuranceDetails: [InsuranceInput]
     patientMrnLinks: [MrnLinkInput]
-    patientAppointments: [AppointmentInput]
+    patientAppointments: [PatientAppointmentInput]
     roles: [RoleInput]
 }
 

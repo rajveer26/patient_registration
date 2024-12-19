@@ -8,8 +8,6 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.enummaster.Gender;
-import com.soul.emr.model.entity.masterentity.masterdb.PrefixMasterDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false, exclude = {"roles", "patientRegistrations", "communicationInfoDB"})
+@EqualsAndHashCode(callSuper = false, exclude = {"patientRegistrations", "communicationInfoDB", "patientAppointments", "patientMrnLinks", "patientInsuranceDetails", "patientEmergencyContacts"})
 @Entity
 @Table(name = "EMR_TXN_REGISTRATION_DETAILS")
 @Data
@@ -114,12 +112,12 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	private String aadhaarNumber;
 	
 	@JsonProperty("prefixMasterDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private PrefixMasterDB prefixMasterDB;
+	@Column(name = "prefix_master_id")
+	private Long prefixMasterDB;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "patient_registration_info_role_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "roles_Id")})
-	private Set <RolesDB> roles = new HashSet <>();
+	@JsonProperty("roleMasterId")
+	@Column(name = "role_master_id")
+	private Long roleMasterId;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "emr_registration_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})

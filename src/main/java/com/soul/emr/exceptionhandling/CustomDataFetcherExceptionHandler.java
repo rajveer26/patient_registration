@@ -11,8 +11,8 @@ import graphql.schema.DataFetchingEnvironment;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CustomDataFetcherExceptionHandler implements DataFetcherExceptionHandler{
@@ -30,7 +30,7 @@ public class CustomDataFetcherExceptionHandler implements DataFetcherExceptionHa
 	}
 	
 	private GraphQLError createGraphQLError(Throwable exception, DataFetchingEnvironment environment){
-		HashMap <String, Object> extensions = new HashMap <>();
+		ConcurrentHashMap <String, Object> extensions = new ConcurrentHashMap <>();
 		String message;
 		
 		switch (exception) {

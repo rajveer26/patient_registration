@@ -8,24 +8,26 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
-import com.soul.emr.model.entity.modelbusinessgroup.organization.organizationdb.OrganizationDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
 @Table(name = "EMR_REGISTRATION_PATIENT_CONSULTATIONS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientConsultationDB extends WhoseColumnsEntity implements Serializable{
+	
+	@Serial
+	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_registration_consultations")
@@ -128,11 +130,10 @@ public class PatientConsultationDB extends WhoseColumnsEntity implements Seriali
 	private PatientDetailsDB patientDetailDB;
 	
 	@JsonProperty("employeeInfoDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DOCTOR_ID", referencedColumnName = "user_details_Id")
-	private EmployeeInfoDB employeeInfoDB;
+	@Column(name = "consultant_id")
+	private Long employeeInfoDB;
 	
 	@JsonProperty("siteId")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private OrganizationDB siteId;
+	@Column(name = "site_id")
+	private Long siteId;
 }

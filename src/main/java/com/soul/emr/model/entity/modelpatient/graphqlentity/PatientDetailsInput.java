@@ -9,8 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoInput;
 import com.soul.emr.model.entity.enummaster.Gender;
-import com.soul.emr.model.entity.masterentity.graphqlentity.PrefixMasterInput;
-import com.soul.emr.model.entity.modelemployee.graphqlentity.RoleInput;
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientAppointments", "patientMrnLinks", "patientInsuranceDetails", "patientEmergencyContacts", "patientRegistrations", "communicationInfoDB"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -88,12 +87,13 @@ public class PatientDetailsInput extends WhoseColumnsEntity
 
 	@JsonProperty("aadhaarNumber")
 	private String aadhaarNumber;
-
+	
 	@JsonProperty("prefixMasterDB")
-	private PrefixMasterInput prefixMasterDB;
-
-	@JsonProperty("roles")
-	private Set <RoleInput> roles = new HashSet <>();
+	private Long prefixMasterDB;
+	
+	@JsonProperty("roleMasterId")
+	@Column(name = "role_master_id")
+	private Long roleMasterId;
 
 	@JsonProperty("communicationInfoDB")
 	private Set <CommunicationInfoInput> communicationInfoDB = new HashSet <>();

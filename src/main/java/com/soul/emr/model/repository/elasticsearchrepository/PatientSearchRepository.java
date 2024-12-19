@@ -1,6 +1,6 @@
 package com.soul.emr.model.repository.elasticsearchrepository;
 
-import com.soul.emr.model.entity.masterentity.elasticsearchentity.PatientSearch;
+import com.soul.emr.model.entity.elasticsearchentity.PatientSearch;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.query.Param;

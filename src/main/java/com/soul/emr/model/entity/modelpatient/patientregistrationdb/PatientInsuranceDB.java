@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
 @Table(name = "EMR_TXN_PATIENT_INSURANCE_INFO")
 @Data

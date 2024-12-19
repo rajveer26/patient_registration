@@ -22,8 +22,8 @@ type PatientConsultationDB {
     consultationType: String
     isDeleted: Boolean
     patientDetailDB: PatientDetailsDB
-    employeeInfoDB: EmployeeInfoDB
-    siteId: OrganizationDB
+    employeeInfoDB: Long
+    siteId: Long
 }
 
 
@@ -51,6 +51,6 @@ input PatientConsultationInput {
     consultationType: String
     isDeleted: Boolean
     patientDetailsInput: PatientDetailsInput
-    employeeInfoDB: EmployeeInfoInput
-    siteId: OrganizationGroupInput
+    employeeInfoDB: Long
+    siteId: Long
 }

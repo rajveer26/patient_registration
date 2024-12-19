@@ -1,4 +1,4 @@
-package com.soul.emr.model.entity.masterentity.elasticsearchentity;
+package com.soul.emr.model.entity.elasticsearchentity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;

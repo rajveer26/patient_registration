@@ -6,13 +6,16 @@ import jakarta.validation.constraints.Email;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.Serial;
+import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class PatientEmergencyContactInput extends WhoseColumnsEntity {
-
+public class PatientEmergencyContactInput extends WhoseColumnsEntity implements Serializable{
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @JsonProperty("emergencyContactInfoId")
     private Long emergencyContactInfoId;
 

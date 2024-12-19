@@ -3,17 +3,17 @@ type PatientAppointment {
     appointmentType: String
     appointmentDate: String
     isActive: Boolean
-    department: DepartmentMasterDB
-    doctor: EmployeeInfoDB
+    departmentMasterId: Long
+    employeeInfoDB: Long
     patientDetailDB: PatientDetailsDB
 }
 
-input AppointmentInput {
+input PatientAppointmentInput {
     patientAppointmentId: ID
     appointmentType: String
     appointmentDate: String
     isActive: Boolean
-    department: DepartmentMasterInput
-    doctor: EmployeeInfoInput
+    departmentMasterId: Long
+    employeeInfoDB: Long
     patientDetailsInput: PatientDetailsInput
 }

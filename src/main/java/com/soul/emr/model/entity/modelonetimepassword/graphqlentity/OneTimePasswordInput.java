@@ -18,14 +18,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OneTimePasswordInput extends WhoseColumnsEntity
+public class OneTimePasswordInput extends WhoseColumnsEntity implements Serializable
 {
+    @Serial
+    private static final long serialVersionUID = 1L;
     
     @NotBlank(message = "IDENTIFIER CANNOT BE BLANK")
     @JsonProperty("identifier")

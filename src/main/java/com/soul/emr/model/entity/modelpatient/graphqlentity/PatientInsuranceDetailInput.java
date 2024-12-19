@@ -9,12 +9,18 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class PatientInsuranceDetailInput extends WhoseColumnsEntity {
-
+public class PatientInsuranceDetailInput extends WhoseColumnsEntity implements Serializable{
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @JsonProperty("patientInsuranceInfoId")
     private Long patientInsuranceInfoId;
 

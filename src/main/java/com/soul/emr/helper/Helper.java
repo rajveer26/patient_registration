@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import com.netflix.graphql.dgs.client.*;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.soul.emr.auth.security.AuthAbstract;
-import com.soul.emr.dao.EmrDaoInterf;
+import com.soul.emr.dao.PatientDaoInterf;
 import com.soul.emr.masters.service.MastersServiceInterf;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoInput;
@@ -54,20 +54,20 @@ public class Helper implements HelperInterf
 	private final JavaMailSender emailSender;
 	private final TemplateEngine templateEngine;
 	private final Environment environment;
-	private final EmrDaoInterf emrDaoInterf;
+	private final PatientDaoInterf patientDaoInterf;
 	private final MastersServiceInterf mastersServiceInterf;
 
 
 	@Autowired
-	public Helper(WebClient webClient, AuthAbstract authAbstract, JavaMailSender emailSender, TemplateEngine templateEngine, Environment environment, EmrDaoInterf emrDaoInterf, MastersServiceInterf mastersServiceInterf){
+	public Helper(WebClient webClient, AuthAbstract authAbstract, JavaMailSender emailSender, TemplateEngine templateEngine, Environment environment, PatientDaoInterf patientDaoInterf, MastersServiceInterf mastersServiceInterf){
 		super();
-		this.webClient        = webClient;
-		this.authAbstract     = authAbstract;
-		this.emailSender = emailSender;
-		this.templateEngine = templateEngine;
-		this.environment      = environment;
-		this.emrDaoInterf = emrDaoInterf;
-        this.mastersServiceInterf = mastersServiceInterf;
+		this.webClient            = webClient;
+		this.authAbstract         = authAbstract;
+		this.emailSender          = emailSender;
+		this.templateEngine       = templateEngine;
+		this.environment          = environment;
+		this.patientDaoInterf     = patientDaoInterf;
+		this.mastersServiceInterf = mastersServiceInterf;
     }
 
 	// Method to Generate a random OTP of 6 Digits
@@ -494,7 +494,7 @@ public class Helper implements HelperInterf
 			if (!Objects.isNull(jsonRoles.getRoleMaster())) {
 
 				//calling current class setRoleMaster() method to set roleMaster
-				dbRoles.setRoleMaster(emrDaoInterf.getRoleMaster(jsonRoles.getRoleMaster().getRoleMasterId()).orElseThrow(() -> new DgsEntityNotFoundException("Role Master not found")));
+				dbRoles.setRoleMaster(patientDaoInterf.getRoleMaster(jsonRoles.getRoleMaster().getRoleMasterId()).orElseThrow(() -> new DgsEntityNotFoundException("Role Master not found")));
 			}
 			//returning dbRoles
 			return dbRoles;

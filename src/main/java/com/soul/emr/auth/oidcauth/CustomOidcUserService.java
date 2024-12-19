@@ -3,7 +3,7 @@ package com.soul.emr.auth.oidcauth;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
 import com.soul.emr.model.entity.modelemployee.registrationdb.UserCredentialsDB;
 import com.soul.emr.model.repository.jparepository.registrationrepository.UserCredentialsRepository;
-import com.soul.emr.dao.EmrDaoInterf;
+import com.soul.emr.dao.PatientDaoInterf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,14 +20,14 @@ public class CustomOidcUserService extends OidcUserService {
 	
 	private final UserCredentialsRepository userRepository;
 	
-	private final EmrDaoInterf emrDaoInterf;
+	private final PatientDaoInterf patientDaoInterf;
 	
 	
 	@Autowired
-	public CustomOidcUserService(UserCredentialsRepository userRepository, EmrDaoInterf emrDaoInterf){
+	public CustomOidcUserService(UserCredentialsRepository userRepository, PatientDaoInterf patientDaoInterf){
 		super();
-		this.userRepository = userRepository;
-		this.emrDaoInterf = emrDaoInterf;
+		this.userRepository   = userRepository;
+		this.patientDaoInterf = patientDaoInterf;
 	}
 	
 	@Override

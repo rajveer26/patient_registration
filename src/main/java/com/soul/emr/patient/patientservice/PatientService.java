@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.netflix.graphql.dgs.exceptions.DgsEntityNotFoundException;
-import com.soul.emr.dao.EmrDaoInterf;
+import com.soul.emr.dao.PatientDaoInterf;
 import com.soul.emr.helper.HelperInterf;
 import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaGenerateOtpInput;
 import com.soul.emr.model.entity.abhaentity.graphqlEntity.AbhaValidateOtpInput;
@@ -12,16 +12,22 @@ import com.soul.emr.model.entity.abhaentity.response.AbhaGenerateOtpResponse;
 import com.soul.emr.model.entity.abhaentity.response.AbhaValidateOtpResponse;
 import com.soul.emr.model.entity.communication.communicationinfodb.CommunicationInfoDB;
 import com.soul.emr.model.entity.communication.graphqlentity.CommunicationInfoInput;
-import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.RolesDB;
+import com.soul.emr.model.entity.elasticsearchentity.PatientSearch;
+import com.soul.emr.model.entity.email.EmailEntity;
+import com.soul.emr.model.entity.enummaster.Medium;
+import com.soul.emr.model.entity.modelonetimepassword.graphqlentity.OneTimePasswordInput;
+import com.soul.emr.model.entity.modelonetimepassword.onetimepassworddb.OneTimePasswordEntityDB;
 import com.soul.emr.model.entity.modelpatient.graphqlentity.*;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Mono;
@@ -29,21 +35,26 @@ import reactor.core.publisher.Mono;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service("patientService")
 public class PatientService implements PatientServiceInterf{
-	private final EmrDaoInterf daoInterf;
+	private final PatientDaoInterf daoInterf;
 	private final HelperInterf helperInterf;
 	private final Environment environment;
+	private final PatientDaoInterf patientDaoInterf;
+	private final PasswordEncoder passwordEncoder;
 	
 	//logger
 	private final Logger logger = LogManager.getLogger(PatientService.class);
 	
 	@Autowired
-	public PatientService(EmrDaoInterf daoInterf, HelperInterf helperInterf, Environment environment){
-		this.daoInterf    = daoInterf;
-		this.helperInterf = helperInterf;
-		this.environment  = environment;
+	public PatientService(PatientDaoInterf daoInterf, HelperInterf helperInterf, Environment environment, PatientDaoInterf patientDaoInterf, PasswordEncoder passwordEncoder){
+		this.daoInterf        = daoInterf;
+		this.helperInterf     = helperInterf;
+		this.environment      = environment;
+		this.patientDaoInterf = patientDaoInterf;
+		this.passwordEncoder  = passwordEncoder;
 	}
 	
 	//method to save patientDetails
@@ -51,17 +62,10 @@ public class PatientService implements PatientServiceInterf{
 	public PatientDetailsDB savePatientDetails(PatientDetailsInput patientDetailsInput){
 		try{
 
-			Optional <PatientDetailsDB> existingPatientByDobAndName = this.daoInterf.findDuplicatePatientDetails(patientDetailsInput.getFirstName(), Optional.ofNullable(patientDetailsInput.getDob()), Optional.empty(), Optional.empty());
-			Optional <PatientDetailsDB> existingPatientByAadhaar = this.daoInterf.findDuplicatePatientDetails(null, Optional.empty(), Optional.ofNullable(patientDetailsInput.getAadhaarNumber()), Optional.empty());
-			Optional<PatientDetailsDB> existingPatientByMobileNumber = this.daoInterf.findDuplicatePatientDetails(null, Optional.empty(), Optional.empty(),
-                    patientDetailsInput.getCommunicationInfoDB()
-							.stream()
-							.map(CommunicationInfoInput::getMobileNumber)
-                            .findFirst()
-			);
-
+			Optional <PatientDetailsDB> existingPatient = this.daoInterf.findDuplicatePatientDetails(patientDetailsInput.getFirstName(), Optional.ofNullable(patientDetailsInput.getDob()), Optional.ofNullable(patientDetailsInput.getAadhaarNumber()), Optional.of(patientDetailsInput.getCommunicationInfoDB().parallelStream().sequential().map(CommunicationInfoInput::getMobileNumber).findFirst()).orElse(null));
+			
 			//if an object is present
-			if (existingPatientByDobAndName.isPresent() || existingPatientByAadhaar.isPresent() || existingPatientByMobileNumber.isPresent()) {
+			if (existingPatient.isPresent()) {
 				//throwing a new RuntimeException
 				throw new RuntimeException("Patient already exists");
 			} else {
@@ -99,10 +103,7 @@ public class PatientService implements PatientServiceInterf{
 		patientDetailsDB.setLastName(patientDetailsInput.getLastName());
 		
 		StringBuilder fullName = new StringBuilder();
-		if (patientDetailsInput.getPrefixMasterDB().getPrefixName() != null && !patientDetailsInput.getPrefixMasterDB().getPrefixName().isEmpty()) {
-			if (!fullName.isEmpty()) fullName.append(" ");
-			fullName.append(patientDetailsInput.getPrefixMasterDB().getPrefixName());
-		}
+		
 		if (patientDetailsInput.getFirstName() != null && !patientDetailsInput.getFirstName().isEmpty()) {
 			if (!fullName.isEmpty()) fullName.append(" ");
 			fullName.append(patientDetailsInput.getFirstName());
@@ -117,6 +118,8 @@ public class PatientService implements PatientServiceInterf{
 		}
 		patientDetailsDB.setPatientName(fullName.toString());
 		
+		patientDetailsDB.setPrefixMasterDB(patientDetailsInput.getPrefixMasterDB());
+		patientDetailsDB.setRoleMasterId(patientDetailsInput.getRoleMasterId());
 		patientDetailsDB.setGender(patientDetailsInput.getGender());
 		patientDetailsDB.setMaritalStatus(patientDetailsInput.getMaritalStatus());
 		patientDetailsDB.setDob(patientDetailsInput.getDob());
@@ -126,11 +129,6 @@ public class PatientService implements PatientServiceInterf{
 		patientDetailsDB.setSmartCardId(patientDetailsInput.getSmartCardId());
 		patientDetailsDB.setEsiIpNumber(patientDetailsDB.getEsiIpNumber());
 		
-		// Setting the prefix
-		if (!Objects.isNull(patientDetailsInput.getPrefixMasterDB())) {
-			
-			patientDetailsDB.setPrefixMasterDB(daoInterf.fetchPrefixMasterById(patientDetailsInput.getPrefixMasterDB().getPrefixMasterId()).orElse(null));
-		}
 		
 		//checking if communicationInfoDB is null or empty or not
 		if (!Objects.isNull(patientDetailsInput.getCommunicationInfoDB()) && !patientDetailsInput.getCommunicationInfoDB().isEmpty()) {
@@ -422,50 +420,6 @@ public class PatientService implements PatientServiceInterf{
 			patientDetailsDB.setPatientAppointments(patientAppointmentDBS);
 		}
 		
-		
-		//checking roles is null or empty or not
-		if (!Objects.isNull(patientDetailsInput.getRoles()) && !patientDetailsInput.getRoles().isEmpty()) {
-			//extracting RolesDB object from patientDetailsDB
-			Set <RolesDB> rolesDBSet = patientDetailsDB.getRoles();
-			
-			//using for-each
-			patientDetailsInput.getRoles().forEach(rolesDB -> {
-				
-				//checking if RolesDB object is present inside a db or not
-				Optional <RolesDB> existingRole = rolesDBSet.stream().filter(role -> !Objects.isNull(rolesDB.getRolesId()) && Objects.equals(rolesDB.getRolesId(), role.getRolesId())).findFirst();
-				
-				//if an object is present
-				if (existingRole.isPresent()) {
-					//calling setRoles() method present in helperInterface
-					RolesDB rolesDB1 = this.helperInterf.setRoles(existingRole.get(), rolesDB);
-					
-					//removing an object from the set
-					rolesDBSet.remove(existingRole.get());
-					
-					//setting reference
-					rolesDB1.setPatientDetailsDBSet(Set.of(patientDetailsDB));
-					
-					//adding an object in a set
-					rolesDBSet.add(rolesDB1);
-				} else {
-					//creating a new RolesDB object
-					RolesDB newRole = new RolesDB();
-					
-					//calling setRoles() method present in helperInterf
-					RolesDB rolesDB1 = this.helperInterf.setRoles(newRole, rolesDB);
-					
-					//setting reference
-					rolesDB1.setPatientDetailsDBSet(Set.of(patientDetailsDB));
-					
-					//adding an object in a set
-					rolesDBSet.add(rolesDB1);
-				}
-			});
-			
-			//updating the set of roles
-			patientDetailsDB.setRoles(rolesDBSet);
-		}
-		
 		//returning patientDetailsDB
 		return patientDetailsDB;
 	}
@@ -495,21 +449,8 @@ public class PatientService implements PatientServiceInterf{
 		patientConsultationDB.setQueueNo(patientConsultationInput.getQueueNo());
 		patientConsultationDB.setConsultationType(patientConsultationInput.getConsultationType());
 		patientConsultationDB.setIsDeleted(patientConsultationInput.getIsDeleted());
-		patientConsultationDB.setSiteId(daoInterf.getOrganization(patientConsultationInput.getSiteId().getOrganizationMasterId()).orElseThrow(() -> new DgsEntityNotFoundException("Organization not found")));
-		
-		//checking if doctorInfoInput is null or not
-		if (!Objects.isNull(patientConsultationInput.getEmployeeInfoDB())) {
-			
-			//checking if EmployeeInfoDB is present inside db or not
-			Optional <EmployeeInfoDB> doctorInfoDB = this.daoInterf.getUserInfoById(patientConsultationInput.getEmployeeInfoDB().getUserDetailsId());
-			
-			//if object is present and code is DOCTOR_MASTER_ROLE_1
-			if (doctorInfoDB.isPresent() && doctorInfoDB.get().getRoles().stream().anyMatch(doct -> Objects.equals(doct.getRoleMaster().getRoleMasterCode().trim().toUpperCase(Locale.ENGLISH), "DOCTOR_MASTER_ROLE_1"))) {
-				patientConsultationDB.setEmployeeInfoDB(doctorInfoDB.get());
-			} else {
-				throw new RuntimeException("PLEASE SELECT THE CONSULTANT");
-			}
-		}
+		patientConsultationDB.setSiteId(patientConsultationInput.getSiteId());
+		patientConsultationDB.setEmployeeInfoDB(patientConsultationInput.getEmployeeInfoDB());
 
 		//whose who is a column
 		patientConsultationDB.setCreatedBy(patientConsultationInput.getCreatedBy());
@@ -584,33 +525,6 @@ public class PatientService implements PatientServiceInterf{
 		patientAppointmentDB.setAppointmentType(patientAppointmentInput.getAppointmentType());
 		patientAppointmentDB.setIsActive(patientAppointmentInput.getIsActive());
 		
-		//checking if departmentMasterInput is null or not
-		if (!Objects.isNull(patientAppointmentInput.getDepartmentMasterInput())) {
-			
-			//checking if EmployeeInfoDB is present inside db or not
-			Optional <DepartmentMasterDB> departmentMasterDB = this.daoInterf.getDepartmentMasterById(patientAppointmentInput.getDepartmentMasterInput().getDepartmentMasterId());
-			
-			//if object is present and code is DOCTOR_MASTER_ROLE_1
-			if (departmentMasterDB.isPresent()) {
-				patientAppointmentDB.setDepartmentMasterDB(departmentMasterDB.get());
-			} else {
-				throw new RuntimeException("PLEASE SELECT THE DEPARTMENT");
-			}
-		}
-		
-		//checking if doctorInfoInput is null or not
-		if (!Objects.isNull(patientAppointmentInput.getEmployeeInfoInput())) {
-			
-			//checking if EmployeeInfoDB is present inside db or not
-			Optional <EmployeeInfoDB> doctorInfoDB = this.daoInterf.getUserInfoById(patientAppointmentInput.getEmployeeInfoInput().getUserDetailsId());
-			
-			//if object is present and code is DOCTOR_MASTER_ROLE_1
-			if (doctorInfoDB.isPresent() && doctorInfoDB.get().getRoles().stream().anyMatch(doct -> Objects.equals(doct.getRoleMaster().getRoleMasterCode().trim().toUpperCase(Locale.ENGLISH), "DOCTOR_MASTER_ROLE_1"))) {
-				patientAppointmentDB.setEmployeeInfoDB(doctorInfoDB.get());
-			} else {
-				throw new RuntimeException("PLEASE SELECT THE CONSULTANT");
-			}
-		}
 
 		//whose who is a column
 		patientAppointmentDB.setCreatedBy(patientAppointmentInput.getCreatedBy());
@@ -701,6 +615,235 @@ public class PatientService implements PatientServiceInterf{
 			logger.error(e.fillInStackTrace());
 			throw new RuntimeException("FAILED FETCHING PATIENT DETAILS");
 		}
+	}
+	
+	@Override
+	public Map <String, Object> generateOtp(OneTimePasswordInput oneTimePasswordInput){
+		
+		//creating a new HashMap object
+		ConcurrentHashMap <String, Object> responseMap = new ConcurrentHashMap <>();
+		
+		try{
+			//checking if identifier is of type email or not
+			if (Objects.equals(oneTimePasswordInput.getMedium(), Medium.EMAIL)) {
+				
+				//generating otp
+				Integer otp = helperInterf.generateOTP();
+				
+				//checking if the mail is valid or not
+				Boolean isValidEmail = helperInterf.isValidEmail(oneTimePasswordInput.getCommunicationInfoDB().getEmailId());
+				
+				//if email is not valid
+				if (!isValidEmail) {
+					responseMap.put("message", "Not a Valid Email");
+					responseMap.put("status", Boolean.FALSE);
+					
+					//returning response in a map
+					return responseMap;
+				}
+				else {
+					
+					//declaring OneTimePasswordEntityDB
+					OneTimePasswordEntityDB oneTimePassword;
+					
+					//checking if a OneTimePasswordEntityDB object is already present in the db or not using communicationInfoId
+					Optional<OneTimePasswordEntityDB> existingOTP = this.patientDaoInterf.getOtpInfoByCommunicationInfoId(oneTimePasswordInput.getCommunicationInfoDB().getCommunicationInfoId());
+					
+					//if an object is present
+					if(existingOTP.isPresent())
+					{
+						//calling current class setOneTimePassword to update data-members
+						oneTimePassword = this.setOneTimePassword(existingOTP.get(), oneTimePasswordInput);
+						
+						//setting reference
+						oneTimePassword.setOtp(passwordEncoder.encode(String.valueOf(otp)));
+					}
+					else {
+						//creating a new OneTimePasswordEntityDB object
+						OneTimePasswordEntityDB oneTimePasswordEntity = new OneTimePasswordEntityDB();
+						
+						//calling current class setOneTimePassword to set data-members
+						oneTimePassword = this.setOneTimePassword(oneTimePasswordEntity, oneTimePasswordInput);
+						
+						//setting reference
+						oneTimePassword.setOtp(passwordEncoder.encode(String.valueOf(otp)));
+					}
+					
+					//saving OTP in a DB
+					OneTimePasswordEntityDB otpEntity = patientDaoInterf.saveOtp(oneTimePassword);
+					
+					//checking if an object is null or not
+					if (!Objects.isNull(otpEntity.getOtpId())) {
+						
+						//calling getEmailEntity method which is a static method present in EmployeeServiceInterf emailEntity to send mail
+						EmailEntity emailEntity = PatientServiceInterf.getEmailEntity(oneTimePasswordInput, otp);
+						System.err.println(Thread.currentThread().getName());
+						//calling sendTemplateEmail() method present in helperInterf
+						helperInterf.sendTemplateEmail(emailEntity);
+						
+						//putting response in a map
+						responseMap.put("message", "email send");
+						responseMap.put("status", Boolean.TRUE);
+					} else {
+						
+						//putting response in a map
+						responseMap.put("message", "OTP IS NULL");
+						responseMap.put("status", Boolean.FALSE);
+					}
+					//returning response
+					return responseMap;
+					
+				}
+			} else {
+				//for mobile otp
+				return null;
+			}
+			
+		}
+		//catch block
+		catch(Exception e){
+			
+			//logging exception
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			
+			//throwing a runTimeException with a message
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	//method to set oneTimePassword data-members
+	private OneTimePasswordEntityDB setOneTimePassword(OneTimePasswordEntityDB oneTimePasswordEntityDB, OneTimePasswordInput oneTimePasswordInput)
+	{
+		oneTimePasswordEntityDB.setMedium(oneTimePasswordInput.getMedium());
+		
+		//checking if the enum is EMAIL
+		if(Objects.equals(oneTimePasswordInput.getMedium(), Medium.EMAIL))
+		{
+			oneTimePasswordEntityDB.setIdentifier(oneTimePasswordInput.getCommunicationInfoDB().getEmailId());
+		}
+		else
+		{
+			oneTimePasswordEntityDB.setIdentifier(String.valueOf(oneTimePasswordInput.getCommunicationInfoDB().getMobileNumber()));
+			
+		}
+		oneTimePasswordEntityDB.setValidUpto(oneTimePasswordInput.getValidUpto());
+		oneTimePasswordEntityDB.setIsValidated(oneTimePasswordInput.getIsValidated());
+		oneTimePasswordEntityDB.setCommunicationInfoDB(this.patientDaoInterf.getCommunicationById(oneTimePasswordInput.getCommunicationInfoDB().getCommunicationInfoId()).orElseThrow(() -> new DgsEntityNotFoundException("Communication entity not found")));
+		oneTimePasswordEntityDB.setCreationTimeStamp(LocalDateTime.now());
+		
+		return oneTimePasswordEntityDB;
+	}
+	
+	@Override
+	public Map <String, Object> verifyOtp(OneTimePasswordInput oneTimePasswordEntity){
+		
+		//creating a hashMap object
+		ConcurrentHashMap <String, Object> responseMap = new ConcurrentHashMap <>();
+		
+		try{
+			//extracting a OneTimePasswordEntityDB object from DB
+			Optional <OneTimePasswordEntityDB> otpInfo = patientDaoInterf.getOtpInfo(oneTimePasswordEntity.getIdentifier(), oneTimePasswordEntity.getCommunicationInfoDB().getCommunicationInfoId());
+			
+			//if an object is present
+			if (otpInfo.isPresent()) {
+				
+				//checking if identifier, otp is same or not and validUpto is in the range or not
+				if(Objects.equals(oneTimePasswordEntity.getIdentifier(), otpInfo.get().getIdentifier()) && passwordEncoder.matches(oneTimePasswordEntity.getOtp(), otpInfo.get().getOtp()) && otpInfo.get().getValidUpto().isBefore(LocalDateTime.now().plusMinutes(5)) && otpInfo.get().getValidUpto().isAfter(LocalDateTime.now().minusMinutes(5)))
+				{
+					//setting isValidated to true
+					otpInfo.get().setIsValidated(Boolean.TRUE);
+					
+					//saving object in a db by calling saveOtp() method present in dao layer
+					OneTimePasswordEntityDB otpEntity = patientDaoInterf.saveOtp(otpInfo.get());
+					
+					//if an object is successfully updated in a db
+					if(!Objects.isNull(otpEntity.getOtpId()))
+					{
+						//putting response in a map
+						responseMap.put("message", "OTP IS VALIDATED");
+						responseMap.put("status", Boolean.TRUE);
+					}
+					else
+					{
+						//putting response in a map
+						responseMap.put("message", "OTP IS NOT VALIDATED");
+						responseMap.put("status", Boolean.FALSE);
+					}
+					
+					//returning response
+					return responseMap;
+				}
+				
+				//throwing a new runtimeException
+				throw new RuntimeException("ENTITY_NOT_FOUND");
+				
+			} else {
+				//throwing a new runtimeException
+				throw new RuntimeException("OTP_INFO_NOT_FOUND");
+			}
+		}
+		//catch block
+		catch(Exception e){
+			//logging exception
+			logger.catching(e);
+			logger.error(e.fillInStackTrace());
+			
+			//putting an entry object
+			responseMap.put("exception", e.getMessage());
+			responseMap.put("status", Boolean.FALSE);
+			
+			//returning response as a map
+			return responseMap;
+		}
+	}
+	
+	@Override
+	public List <PatientSearch> searchPatient(String query){
+		return this.patientDaoInterf.searchPatient(query);
+	}
+	
+	@Override
+	public long patientCountBasedOnTypeAndDoctorCode(Optional <String> type, String doctorCode){
+		try{
+			return patientDaoInterf.fetchPatientCountByDoctorNumberAndType(type, doctorCode);
+		}
+		catch(Exception e){
+			logger.error(e.fillInStackTrace());
+			logger.catching(e);
+			
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	//service layer to fetch patient consultation
+	@Override
+	public Page <PatientConsultationDB> fetchPatientConsultation(String doctorCode, String type, Integer page, Integer size, Optional <LocalDate> date, String consultationStatus){
+		//using pageable to fetch according to the page
+		Pageable pageable = PageRequest.of(page, size);
+		
+		//calling getPatientRegistrationDetailByDoctorCodeAndType() method present in dao layer to fetch patients
+		return patientDaoInterf.getPatientRegistrationDetailByDoctorCodeAndType(doctorCode, type, date, consultationStatus, pageable);
+	}
+	
+	//service layer to fetch patient count based on doctorNumber and type
+	@Override
+	public long fetchPatientCountByDoctorNumberAndType(Optional <String> type, String doctorCode)
+	{
+		return patientDaoInterf.fetchPatientCountByDoctorNumberAndType(type, doctorCode);
+	}
+	
+	//service layer to fetch patient count for graph with gender and encounterDate
+	@Override
+	public List <Object[]> fetchPatientCountByGenderAndEncounterDate(Optional <String> type, String doctorCode, LocalDate currentDate){
+		return patientDaoInterf.fetchPatientCountBasedOnConsultationType(type, doctorCode, currentDate);
+	}
+	
+	//service layer to fetch patient count based on consultationTypes
+	@Override
+	public long fetchPatientCountByGenderAndEncounterDate(List<String> consultationTypes, String doctorCode, LocalDate currentDate)
+	{
+		return patientDaoInterf.fetchPatientCountBasedOnConsultationType(consultationTypes, doctorCode, currentDate);
 	}
 	
 }

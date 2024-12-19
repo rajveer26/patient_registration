@@ -1,10 +1,7 @@
 package com.soul.emr.model.entity.communication.communicationinfodb;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
-import com.soul.emr.model.entity.modelbusinessgroup.organization.organizationdb.OrganizationDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import com.soul.emr.model.entity.modelpatient.patientregistrationdb.PatientDetailsDB;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -18,7 +15,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = false, exclude = {"employeeInfoDB", "organizationDB", "patientDetails"})
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetails"})
 @Entity
 @Table(name = "EMR_TXN_REGISTRATION_COMMUNICATION_INFO")
 @Data
@@ -92,18 +89,6 @@ public class CommunicationInfoDB extends WhoseColumnsEntity implements Serializa
 	@JsonProperty("isActive")
 	@Column(name = "is_active", nullable = false)
 	private Boolean isActive;
-
-	@JsonBackReference
-	@JsonProperty("employeeInfoDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_Info_Id", referencedColumnName = "user_details_Id")
-	private EmployeeInfoDB employeeInfoDB;
-
-	@JsonBackReference
-	@JsonProperty("organizationGroupDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "organization_Info_Id", referencedColumnName = "organization_Master_Id")
-	private OrganizationDB organizationDB;
 
 	@JsonProperty("patientDetails")
 	@ManyToMany(mappedBy = "communicationInfoDB", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

@@ -5,7 +5,7 @@ import com.netflix.graphql.dgs.DgsMutation;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
 import com.soul.emr.auth.login.service.LoginServiceInterf;
-import com.soul.emr.doctor.service.EmployeeServiceInterf;
+import com.soul.emr.employee.service.EmployeeServiceInterf;
 import com.soul.emr.model.entity.modelemployee.graphqlentity.UserCredentialsInput;
 import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import org.jetbrains.annotations.NotNull;

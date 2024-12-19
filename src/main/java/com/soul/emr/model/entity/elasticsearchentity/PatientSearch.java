@@ -1,4 +1,4 @@
-package com.soul.emr.model.entity.masterentity.elasticsearchentity;
+package com.soul.emr.model.entity.elasticsearchentity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,66 +7,69 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
+import com.soul.emr.model.entity.enummaster.Gender;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MedicationStockSearch extends WhoseColumnsEntity implements Serializable
+@Document(indexName = "patient_search_master")
+public class PatientSearch extends WhoseColumnsEntity implements Serializable
 {
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@JsonProperty("medicationStockId")
-	@Field(name = "medication_Stock_Id")
-	private Long medicationStockId;
+	@JsonProperty("patientId")
+	@Field(name = "patient_id")
+	private Long patientId;
 	
-	@JsonProperty("batchCode")
-	@Field(name = "batch_code")
-	private String batchCode;
+	@Field(name = "patient_name")
+	@JsonProperty("patientName")
+	private String patientName;
 	
-	@JsonProperty("batchDate")
-	@Field(name = "batch_date")
+	@Enumerated(EnumType.STRING)
+	@Field(name = "gender")
+	@JsonProperty("gender")
+	private Gender gender;
+	
+	@Field(name = "mrno")
+	@JsonProperty("mrno")
+	private String mrno;
+	
+	@Field(name = "dob")
+	@JsonProperty("dob")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	private LocalDate batchDate;
+	private LocalDate dob;
 	
-	@JsonProperty("expiryDate")
-	@Field(name = "expiry_Date")
+	@Field(name = "registered_on")
+	@JsonProperty("registeredOn")
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
-	private LocalDate expiryDate;
+	private LocalDate registeredOn;
 	
-	@JsonProperty("storeId")
-	@Field(name = "store_id")
-	private Long storeId;
+	@Field(name = "plan_name")
+	@JsonProperty("planName")
+	private String planName;
 	
-	@JsonProperty("stock")
-	@Field(name = "stock")
-	private Float stock;
-	
-	@JsonProperty("price")
-	@Field(name = "price")
-	private Double price;
-	
-	@JsonProperty("cgst")
-	@Field(name = "cgst")
-	private Double cgst;
-	
-	@JsonProperty("sgst")
-	@Field(name = "sgst")
-	private Double sgst;
+	@Field(type = FieldType.Nested, includeInParent = true)
+	private Set <CommunicationSearch> communicationInfoDB = new HashSet <>();
 }

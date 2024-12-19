@@ -16,6 +16,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
@@ -23,8 +25,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public class WhoseColumnsEntity
+public class WhoseColumnsEntity implements Serializable
 {
+	@Serial
+	private static final long serialVersionUID = 1L;
+	
 	//Who's Who Columns
 	
 	@JsonProperty("createdBy")

@@ -8,25 +8,27 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
-import com.soul.emr.model.entity.masterentity.masterdb.DepartmentMasterDB;
-import com.soul.emr.model.entity.modelemployee.registrationdb.EmployeeInfoDB;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
 @Table(name = "EMR_REGISTRATION_PATIENT_APPOINTMENTS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientAppointmentDB extends WhoseColumnsEntity implements Serializable {
-
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_appointments")
     @SequenceGenerator(name = "seq_patient_self_appointments", sequenceName = "seq_patient_self_appointments", allocationSize = 1)
@@ -50,14 +52,12 @@ public class PatientAppointmentDB extends WhoseColumnsEntity implements Serializ
     private Boolean isActive;
 
     @JsonProperty("departmentMasterDB")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", referencedColumnName = "department_master_Id")
-    private DepartmentMasterDB departmentMasterDB;
+    @Column(name = "department_master_id")
+    private Long departmentMasterId;
 
     @JsonProperty("employeeInfoDB")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id", referencedColumnName = "user_details_Id")
-    private EmployeeInfoDB employeeInfoDB;
+    @Column(name = "consultant_id")
+    private Long employeeInfoDB;
 
     @JsonBackReference
     @JsonProperty("patientDetailDB")

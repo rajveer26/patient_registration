@@ -7,21 +7,23 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
-import com.soul.emr.model.entity.masterentity.graphqlentity.DepartmentMasterInput;
-import com.soul.emr.model.entity.modelemployee.graphqlentity.EmployeeInfoInput;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientAppointmentInput extends WhoseColumnsEntity {
-
+public class PatientAppointmentInput extends WhoseColumnsEntity implements Serializable{
+    
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @JsonProperty("patientConsultationId")
     private Long patientAppointmentId;
@@ -37,12 +39,12 @@ public class PatientAppointmentInput extends WhoseColumnsEntity {
 
     @JsonProperty("isActive")
     private Boolean isActive;
-
-    @JsonProperty("departmentMasterDB")
-    private DepartmentMasterInput departmentMasterInput;
-
+    
+    @JsonProperty("departmentMasterId")
+    private Long departmentMasterId;
+    
     @JsonProperty("employeeInfoDB")
-    private EmployeeInfoInput employeeInfoInput;
+    private Long employeeInfoDB;
 
     @JsonProperty("patientDetailDB")
     private PatientDetailsInput patientDetailsInput;

@@ -7,21 +7,24 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.soul.emr.model.entity.commonentity.WhoseColumnsEntity;
-import com.soul.emr.model.entity.modelbusinessgroup.organization.graphqlentity.OrganizationGroupInput;
-import com.soul.emr.model.entity.modelemployee.graphqlentity.EmployeeInfoInput;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientConsultationInput extends WhoseColumnsEntity
+public class PatientConsultationInput extends WhoseColumnsEntity implements Serializable
 {
+	
+	@Serial
+	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("patientConsultationId")
 	private Long patientConsultationId;
@@ -93,11 +96,11 @@ public class PatientConsultationInput extends WhoseColumnsEntity
 	private Boolean isDeleted;
 	
 	@JsonProperty("siteId")
-	private OrganizationGroupInput siteId;
+	private Long siteId;
 	
 	@JsonProperty("patientDetailDB")
 	private PatientDetailsInput patientDetailsInput;
 	
 	@JsonProperty("employeeInfoDB")
-	private EmployeeInfoInput employeeInfoDB;
+	private Long employeeInfoDB;
 }

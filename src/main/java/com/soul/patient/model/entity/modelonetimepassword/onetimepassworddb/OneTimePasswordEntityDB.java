@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "EMR_REGISTRATION_TXN_OTP")
+@Table(name = "PATIENT_TXN_REGISTRATION_OTP")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

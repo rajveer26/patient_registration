@@ -24,7 +24,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientRegistrations", "communicationInfoDB", "patientAppointments", "patientMrnLinks", "patientInsuranceDetails", "patientEmergencyContacts"})
 @Entity
-@Table(name = "EMR_REGISTRATION_PATIENT_DETAILS")
+@Table(name = "PATIENT_REGISTRATION_USER_DETAILS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -120,7 +120,7 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	private Long roleMasterId;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "emr_registration_patient_info_communication_mapping", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
+	@JoinTable(name = "patient_txn_registration_communication_info", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
 	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
 
 	@JsonManagedReference

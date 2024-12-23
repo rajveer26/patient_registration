@@ -120,7 +120,7 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	private Long roleMasterId;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "patient_txn_registration_communication_info", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
+	@JoinTable(name = "patient_communication", joinColumns = {@JoinColumn(name = "patient_Id")}, inverseJoinColumns = {@JoinColumn(name = "communication_Info_Id")})
 	private Set <CommunicationInfoDB> communicationInfoDB = new HashSet <>();
 
 	@JsonManagedReference

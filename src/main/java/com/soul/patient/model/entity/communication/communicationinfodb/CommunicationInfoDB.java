@@ -30,7 +30,7 @@ public class CommunicationInfoDB extends WhoseColumnsEntity implements Serializa
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "registration_communication_info_seq")
 	@SequenceGenerator(name = "registration_communication_info_seq", sequenceName = "registration_communication_info_seq", allocationSize = 1)
 	@JsonProperty("CommunicationInfoId")
-	@Column(name = "communication_Info_Id", length = 19)
+	@Column(name = "communication_Info_Id")
 	private Long CommunicationInfoId;
 
 	@JsonProperty("address")

@@ -450,7 +450,7 @@ public class PatientService implements PatientServiceInterf{
 		patientConsultationDB.setConsultationType(patientConsultationInput.getConsultationType());
 		patientConsultationDB.setIsDeleted(patientConsultationInput.getIsDeleted());
 		patientConsultationDB.setSiteId(patientConsultationInput.getSiteId());
-		patientConsultationDB.setEmployeeInfoDB(patientConsultationInput.getEmployeeInfoDB());
+		patientConsultationDB.setDoctorCode(patientConsultationInput.getDoctorCode());
 
 		//whose who is a column
 		patientConsultationDB.setCreatedBy(patientConsultationInput.getCreatedBy());

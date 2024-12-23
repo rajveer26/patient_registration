@@ -101,6 +101,6 @@ public class PatientConsultationInput extends WhoseColumnsEntity implements Seri
 	@JsonProperty("patientDetailDB")
 	private PatientDetailsInput patientDetailsInput;
 	
-	@JsonProperty("employeeInfoDB")
-	private Long employeeInfoDB;
+	@JsonProperty("doctorCode")
+	private String doctorCode;
 }

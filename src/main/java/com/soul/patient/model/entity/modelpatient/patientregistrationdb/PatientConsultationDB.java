@@ -129,9 +129,9 @@ public class PatientConsultationDB extends WhoseColumnsEntity implements Seriali
 	@JoinColumn(name = "patient_Id", referencedColumnName = "patient_Id")
 	private PatientDetailsDB patientDetailDB;
 	
-	@JsonProperty("employeeInfoDB")
-	@Column(name = "consultant_id")
-	private Long employeeInfoDB;
+	@JsonProperty("doctorCode")
+	@Column(name = "doctor_code")
+	private String doctorCode;
 	
 	@JsonProperty("siteId")
 	@Column(name = "site_id")

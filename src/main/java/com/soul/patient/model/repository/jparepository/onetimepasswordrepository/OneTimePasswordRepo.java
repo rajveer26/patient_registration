@@ -15,7 +15,7 @@ public interface OneTimePasswordRepo extends JpaRepository<OneTimePasswordEntity
     @Query("SELECT o FROM OneTimePasswordEntityDB o WHERE o.communicationInfoDB.CommunicationInfoId = :communicationId")
     Optional<OneTimePasswordEntityDB> findByCommunicationInfoId(@Param("communicationId") Long communicationId);
     
-    @Query("SELECT o FROM OneTimePasswordEntityDB o WHERE o.communicationInfoDB.employeeInfoDB.userDetailsId = :userDetailId")
+    @Query("SELECT o FROM OneTimePasswordEntityDB o WHERE o.createdBy = :userDetailId")
     Optional<OneTimePasswordEntityDB> findOtpByUserId(@Param("userDetailId") Long userDetailId);
     
 }

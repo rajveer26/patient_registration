@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_TXN_PATIENT_INSURANCE_INFO")
+@Table(name = "EMR_PATIENT_INSURANCE_INFO")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

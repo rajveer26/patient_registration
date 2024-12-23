@@ -20,15 +20,15 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_REGISTRATION_PATIENT_APPOINTMENTS")
+@Table(name = "EMR_PATIENT_APPOINTMENTS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientAppointmentDB extends WhoseColumnsEntity implements Serializable {
-    
+
     @Serial
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_appointments")
     @SequenceGenerator(name = "seq_patient_self_appointments", sequenceName = "seq_patient_self_appointments", allocationSize = 1)

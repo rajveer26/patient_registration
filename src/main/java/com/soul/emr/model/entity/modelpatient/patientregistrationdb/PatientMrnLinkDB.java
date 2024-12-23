@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_TXN_PATIENT_MRN_LINKS")
+@Table(name = "EMR_PATIENT_MRN_LINKS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

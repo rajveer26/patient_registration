@@ -24,7 +24,7 @@ import java.util.Set;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientRegistrations", "communicationInfoDB", "patientAppointments", "patientMrnLinks", "patientInsuranceDetails", "patientEmergencyContacts"})
 @Entity
-@Table(name = "EMR_TXN_REGISTRATION_DETAILS")
+@Table(name = "EMR_REGISTRATION_PATIENT_DETAILS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

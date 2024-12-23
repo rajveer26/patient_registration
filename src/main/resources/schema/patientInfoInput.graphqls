@@ -1,50 +1,3 @@
-#
-#type PatientDetailsDB {
-#    patientId: ID!
-#    patientName: String!
-#    gender: Gender!
-#    mrno: String!
-#    dob: LocalDate!
-#    patientImage: String
-#    registeredOn: LocalDate
-#    planName: String
-#    prefixMasterDB: PrefixMasterDB
-#    communicationInfoDB: [CommunicationInfoDB]
-#    patientRegistrations: [PatientConsultationDB]
-#    roles: [RolesDB]
-#}
-#
-#
-## Define the PatientVisitInput type
-#input PatientDetailsInput {
-#    patientId: Long
-#    patientName: String!
-#    gender: Gender!
-#    mrno: String!
-#    dob: LocalDate!
-#    patientImage: String
-#    registeredOn: LocalDate
-#    planName: String
-#    prefixMasterDB: PrefixMasterInput
-#    communicationInfoDB: [CommunicationInfoInput]
-#    patientRegistrations: [PatientConsultationInput]
-#    roles: [RoleInput]
-#}
-#
-## Define the PatientVisitInput type
-#type PatientSearch {
-#    patientId: Long
-#    patientName: String!
-#    gender: Gender!
-#    mrno: String!
-#    dob: LocalDate!
-#    patientImage: String
-#    registeredOn: LocalDate
-#    planName: String
-#    communicationInfoDB: [CommunicationSearch]
-#}
-
-
 
 # Define the PatientDetailsDB type
 type PatientDetailsDB {
@@ -62,14 +15,14 @@ type PatientDetailsDB {
     registeredOn: LocalDate
     smartCardId: String
     esiIpNumber: String
-    prefixMasterDB: PrefixMasterDB
+    prefixMasterDB: Long
     communicationInfoDB: [CommunicationInfoDB]
     patientRegistrations: [PatientConsultationDB]
     patientEmergencyContacts: [PatientEmergencyContact]
     patientInsuranceDetails: [PatientInsurance]
     patientMrnLinks: [PatientMrnLink]
     patientAppointments: [PatientAppointment]
-    roles: [RolesDB]
+    roleMasterId: Long
 }
 
 # Define the input type PatientDetailsInput
@@ -88,14 +41,14 @@ input PatientDetailsInput {
     registeredOn: LocalDate
     smartCardId: String
     esiIpNumber: String
-    prefixMasterDB: PrefixMasterInput
+    prefixMasterDB: Long
     communicationInfoDB: [CommunicationInfoInput]
     patientRegistrations: [PatientConsultationInput]
     patientEmergencyContacts: [EmergencyContactInput]
     patientInsuranceDetails: [InsuranceInput]
     patientMrnLinks: [MrnLinkInput]
     patientAppointments: [PatientAppointmentInput]
-    roles: [RoleInput]
+    roleMasterId: Long
 }
 
 # Define a simplified PatientSearch type for search results

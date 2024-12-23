@@ -328,7 +328,7 @@
 							<schemaPaths>
 								<param>src/main/resources/schema</param>
 							</schemaPaths>
-							<packageName>com.soul.emr.codegen</packageName>
+							<packageName>com.soul.patient.codegen</packageName>
 							<addGeneratedAnnotation>true</addGeneratedAnnotation>
 						</configuration>
 					</execution>

@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchConfiguration;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.elasticsearch.repository.config.EnableReactiveElasticsearchRepositories;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -20,6 +22,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.Base64;
 @Configuration
+@EnableElasticsearchRepositories(basePackages = "com.soul.patient.model.repository.elasticsearchrepository")
 public class ElasticSearConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.client.certificate}")
     private String certificateBase64;

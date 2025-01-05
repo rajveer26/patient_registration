@@ -4,9 +4,11 @@ import com.soul.patient.model.entity.elasticsearchentity.PatientSearch;
 import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface PatientSearchRepository extends ElasticsearchRepository<PatientSearch, Long>
 {
 	

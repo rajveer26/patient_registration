@@ -14,7 +14,7 @@ import java.util.List;
 public interface PatientConsultationRepository extends JpaRepository<PatientConsultationDB, Long>
 {
 	@Transactional
-	@Query("SELECT o FROM PatientConsultationDB o WHERE o.doctorCode = :doctorCode AND o.type = :patientType AND (:date IS NULL OR o.encounterDate = :date) AND o.consultationStatus = :consultationStatus")
+	@Query("SELECT o FROM PatientConsultationDB o WHERE (:doctorCode IS NULL OR o.doctorCode = :doctorCode) AND (:patientType IS NULL OR o.type = :patientType) AND (:date IS NULL OR o.encounterDate = :date) AND (:consultationStatus IS NULL OR o.consultationStatus = :consultationStatus)")
 	Page <PatientConsultationDB> findByEmployeeInfoDB_EmployeeID(@Param("doctorCode") String doctorCode, @Param("patientType") String patientType, @Param("date")LocalDate date, @Param("consultationStatus") String consultationStatus, Pageable pageable);
 	
 	// Query to count the records based on optional encounterDates and type

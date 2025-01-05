@@ -19,7 +19,7 @@ public interface PatientConsultationRepository extends JpaRepository<PatientCons
 	
 	// Query to count the records based on optional encounterDates and type
 	@Transactional
-	@Query("SELECT COUNT(p) FROM PatientConsultationDB p WHERE (:type IS NULL OR p.type = :type) AND p.doctorCode = :doctorCode")
+	@Query("SELECT COUNT(p) FROM PatientConsultationDB p WHERE (:type IS NULL OR p.type = :type) AND (:doctorCode IS NULL OR p.doctorCode = :doctorCode)")
 	long findByPatientConsultationCount(@Param("type") String type, @Param("doctorCode") String doctorCode);
 	
 	//Query to fetch patient count for graph with gender and encounterDate

@@ -11,11 +11,16 @@ type PatientDetailsDB {
     maritalStatus: String
     dob: LocalDate
     age: Int
+    registrationType: String
     patientImage: String
     registeredOn: LocalDate
     smartCardId: String
     esiIpNumber: String
     prefixMasterDB: Long
+    createdBy: Long
+    creationTimeStamp: LocalDateTime
+    updatedBy: Long
+    updationTimeStamp: LocalDateTime
     communicationInfoDB: [CommunicationInfoDB]
     patientRegistrations: [PatientConsultationDB]
     patientEmergencyContacts: [PatientEmergencyContact]

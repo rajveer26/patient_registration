@@ -91,6 +91,10 @@ public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable
 	@JsonFormat(shape = JsonFormat.Shape.STRING)
 	private LocalDate registeredOn;
 
+	@JsonProperty("registrationType")
+	@Column(name = "registrationType")
+	private String registrationType;
+
 	@Column(name = "marital_status")
 	@JsonProperty("maritalStatus")
 	private String maritalStatus;

@@ -137,10 +137,10 @@ public class PatientService implements PatientServiceInterf{
 			Set <CommunicationInfoDB> communicationInfoDBList = patientDetailsDB.getCommunicationInfoDB();
 			
 			//using for-each
-			patientDetailsInput.getCommunicationInfoDB().forEach(communicationInfoInput -> {
+			patientDetailsInput.getCommunicationInfoDB().parallelStream().forEach(communicationInfoInput -> {
 				
 				//checking if CommunicationInfoDB is already present inside a db or not using communicationInfoId
-				Optional <CommunicationInfoDB> existingCommunication = communicationInfoDBList.stream().filter(comuniInfo -> !Objects.isNull(communicationInfoInput.getCommunicationInfoId()) && Objects.equals(communicationInfoInput.getCommunicationInfoId(), comuniInfo.getCommunicationInfoId())).findFirst();
+				Optional <CommunicationInfoDB> existingCommunication = communicationInfoDBList.parallelStream().filter(comuniInfo -> !Objects.isNull(communicationInfoInput.getCommunicationInfoId()) && Objects.equals(communicationInfoInput.getCommunicationInfoId(), comuniInfo.getCommunicationInfoId())).findFirst();
 				{
 					//if an object is present
 					if (existingCommunication.isPresent()) {
@@ -178,7 +178,7 @@ public class PatientService implements PatientServiceInterf{
 			List <PatientConsultationDB> patientConsultationDBS = patientDetailsDB.getPatientRegistrations();
 			
 			//using for-each
-			patientDetailsInput.getPatientRegistrations().forEach(patientConsultationInput -> {
+			patientDetailsInput.getPatientRegistrations().parallelStream().forEach(patientConsultationInput -> {
 				
 				//checking if PatientConsultationDB object is present inside an object or not
 				Optional <PatientConsultationDB> existingPatientRegistration = patientConsultationDBS.stream().filter(patientRegis -> !Objects.isNull(patientConsultationInput.getPatientConsultationId()) && Objects.equals(patientConsultationInput.getPatientConsultationId(), patientRegis.getPatientConsultationId())).findFirst();
@@ -228,10 +228,10 @@ public class PatientService implements PatientServiceInterf{
 			List <PatientEmergencyContacts> patientEmergencyContactDBS = patientDetailsDB.getPatientEmergencyContacts();
 
 			//using for-each
-			patientDetailsInput.getPatientEmergencyContacts().forEach(patientEmergencyContactInput -> {
+			patientDetailsInput.getPatientEmergencyContacts().parallelStream().forEach(patientEmergencyContactInput -> {
 
 				//checking if PatientEmergencyContactDB object is present inside an object or not
-				Optional <PatientEmergencyContacts> existingPatientEmergencyContact = patientEmergencyContactDBS.stream().filter(patientRegis -> !Objects.isNull(patientEmergencyContactInput.getEmergencyContactInfoId()) && Objects.equals(patientEmergencyContactInput.getEmergencyContactInfoId(), patientRegis.getEmergencyContactInfoId())).findFirst();
+				Optional <PatientEmergencyContacts> existingPatientEmergencyContact = patientEmergencyContactDBS.parallelStream().filter(patientRegis -> !Objects.isNull(patientEmergencyContactInput.getEmergencyContactInfoId()) && Objects.equals(patientEmergencyContactInput.getEmergencyContactInfoId(), patientRegis.getEmergencyContactInfoId())).findFirst();
 				{
 					//if an object is present
 					if (existingPatientEmergencyContact.isPresent()) {
@@ -278,10 +278,10 @@ public class PatientService implements PatientServiceInterf{
 			List <PatientInsuranceDB> patientInsuranceDBS = patientDetailsDB.getPatientInsuranceDetails();
 
 			//using for-each
-			patientDetailsInput.getPatientInsuranceDetails().forEach(patientInsuranceInput -> {
+			patientDetailsInput.getPatientInsuranceDetails().parallelStream().forEach(patientInsuranceInput -> {
 
 				//checking if patientInsuranceDB object is present inside an object or not
-				Optional <PatientInsuranceDB> existingPatientInsurance = patientInsuranceDBS.stream().filter(patientInsurance -> !Objects.isNull(patientInsuranceInput.getPatientInsuranceInfoId()) && Objects.equals(patientInsuranceInput.getPatientInsuranceInfoId(), patientInsurance.getPatientInsuranceInfoId())).findFirst();
+				Optional <PatientInsuranceDB> existingPatientInsurance = patientInsuranceDBS.parallelStream().filter(patientInsurance -> !Objects.isNull(patientInsuranceInput.getPatientInsuranceInfoId()) && Objects.equals(patientInsuranceInput.getPatientInsuranceInfoId(), patientInsurance.getPatientInsuranceInfoId())).findFirst();
 				{
 					//if an object is present
 					if (existingPatientInsurance.isPresent()) {
@@ -328,10 +328,10 @@ public class PatientService implements PatientServiceInterf{
 			List <PatientMrnLinkDB> patientMrnLinkDBS = patientDetailsDB.getPatientMrnLinks();
 
 			//using for-each
-			patientDetailsInput.getPatientMrnLinks().forEach(patientMrnLinkInput -> {
+			patientDetailsInput.getPatientMrnLinks().parallelStream().forEach(patientMrnLinkInput -> {
 
 				//checking if patientInsuranceDB object is present inside an object or not
-				Optional <PatientMrnLinkDB> existingPatientMrnLink = patientMrnLinkDBS.stream().filter(patientMrnLink -> !Objects.isNull(patientMrnLinkInput.getPatientMrnLinkId()) && Objects.equals(patientMrnLinkInput.getPatientMrnLinkId(), patientMrnLink.getPatientMrnLinkId())).findFirst();
+				Optional <PatientMrnLinkDB> existingPatientMrnLink = patientMrnLinkDBS.parallelStream().filter(patientMrnLink -> !Objects.isNull(patientMrnLinkInput.getPatientMrnLinkId()) && Objects.equals(patientMrnLinkInput.getPatientMrnLinkId(), patientMrnLink.getPatientMrnLinkId())).findFirst();
 				{
 					//if an object is present
 					if (existingPatientMrnLink.isPresent()) {
@@ -378,10 +378,10 @@ public class PatientService implements PatientServiceInterf{
 			List <PatientAppointmentDB> patientAppointmentDBS = patientDetailsDB.getPatientAppointments();
 			
 			//using for-each
-			patientDetailsInput.getPatientAppointments().forEach(patientAppointmentInput -> {
+			patientDetailsInput.getPatientAppointments().parallelStream().forEach(patientAppointmentInput -> {
 				
 				//checking if PatientAppointmentDB object is present inside an object or not
-				Optional <PatientAppointmentDB> existingPatientAppointment = patientAppointmentDBS.stream().filter(patientRegis -> !Objects.isNull(patientAppointmentInput.getPatientAppointmentId()) && Objects.equals(patientAppointmentInput.getPatientAppointmentId(), patientRegis.getPatientAppointmentId())).findFirst();
+				Optional <PatientAppointmentDB> existingPatientAppointment = patientAppointmentDBS.parallelStream().filter(patientRegis -> !Objects.isNull(patientAppointmentInput.getPatientAppointmentId()) && Objects.equals(patientAppointmentInput.getPatientAppointmentId(), patientRegis.getPatientAppointmentId())).findFirst();
 				{
 					//if an object is present
 					if (existingPatientAppointment.isPresent()) {

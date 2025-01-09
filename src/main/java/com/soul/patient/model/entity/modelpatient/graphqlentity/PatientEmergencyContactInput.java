@@ -3,18 +3,19 @@ package com.soul.patient.model.entity.modelpatient.graphqlentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.soul.patient.model.entity.commonentity.WhoseColumnsEntity;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
 @Data
-public class PatientEmergencyContactInput extends WhoseColumnsEntity implements Serializable{
-    
-    @Serial
-    private static final long serialVersionUID = 1L;
+@AllArgsConstructor
+@NoArgsConstructor
+public class PatientEmergencyContactInput extends WhoseColumnsEntity{
     
     @JsonProperty("emergencyContactInfoId")
     private Long emergencyContactInfoId;
@@ -34,4 +35,7 @@ public class PatientEmergencyContactInput extends WhoseColumnsEntity implements 
     @JsonProperty("contactPersonEmailId")
     @Email
     private String contactPersonEmailId;
+    
+    @JsonProperty("patientDetailDB")
+    private PatientDetailsInput patientDetailsInput;
 }

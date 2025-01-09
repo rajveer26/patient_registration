@@ -10,19 +10,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
 @Table(name = "EMR_PATIENT_MRN_LINKS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientMrnLinkDB extends WhoseColumnsEntity implements Serializable {
+public class PatientMrnLinkDB extends WhoseColumnsEntity {
     
-    @Serial
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "emr_patient_mrn_link_info_seq")

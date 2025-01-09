@@ -13,18 +13,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientConsultationInput extends WhoseColumnsEntity implements Serializable
+public class PatientConsultationInput extends WhoseColumnsEntity
 {
-	
-	@Serial
-	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("patientConsultationId")
 	private Long patientConsultationId;

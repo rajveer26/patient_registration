@@ -1,4 +1,4 @@
-type PatientAppointment {
+type PatientAppointmentDB {
     patientAppointmentId: ID!
     appointmentType: String
     appointmentDate: String

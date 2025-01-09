@@ -23,10 +23,10 @@ type PatientDetailsDB {
     updationTimeStamp: LocalDateTime
     communicationInfoDB: [CommunicationInfoDB]
     patientRegistrations: [PatientConsultationDB]
-    patientEmergencyContacts: [PatientEmergencyContact]
-    patientInsuranceDetails: [PatientInsurance]
-    patientMrnLinks: [PatientMrnLink]
-    patientAppointments: [PatientAppointment]
+    patientEmergencyContacts: [PatientEmergencyContacts]
+    patientInsuranceDetails: [PatientInsuranceDB]
+    patientMrnLinks: [PatientMrnLinkDB]
+    patientAppointments: [PatientAppointmentDB]
     roleMasterId: Long
 }
 
@@ -43,17 +43,19 @@ input PatientDetailsInput {
     dob: LocalDate
     age: Int
     patientImage: String
-    registeredOn: LocalDate
+    registeredOn: LocalDate # LocalDate typically represented as String in "yyyy-MM-dd" format
     smartCardId: String
     esiIpNumber: String
+    abhaNumber: String
+    aadhaarNumber: String
     prefixMasterDB: Long
+    roleMasterId: Long
     communicationInfoDB: [CommunicationInfoInput]
     patientRegistrations: [PatientConsultationInput]
-    patientEmergencyContacts: [EmergencyContactInput]
-    patientInsuranceDetails: [InsuranceInput]
-    patientMrnLinks: [MrnLinkInput]
+    patientEmergencyContacts: [PatientEmergencyContactInput]
+    patientInsuranceDetails: [PatientInsuranceDetailInput]
+    patientMrnLinks: [PatientMrnLinkInput]
     patientAppointments: [PatientAppointmentInput]
-    roleMasterId: Long
 }
 
 # Define a simplified PatientSearch type for search results

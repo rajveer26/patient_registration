@@ -1,4 +1,4 @@
-type PatientEmergencyContact {
+type PatientEmergencyContacts {
     emergencyContactInfoId: ID!
     contactPersonRelation: String
     contactPersonName: String
@@ -8,7 +8,7 @@ type PatientEmergencyContact {
     patientDetailDB: PatientDetailsDB
 }
 
-input EmergencyContactInput {
+input PatientEmergencyContactInput {
     emergencyContactInfoId: ID
     contactPersonRelation: String
     contactPersonName: String

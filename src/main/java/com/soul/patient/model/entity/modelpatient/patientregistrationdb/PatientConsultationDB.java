@@ -14,8 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
@@ -24,10 +22,8 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientConsultationDB extends WhoseColumnsEntity implements Serializable{
+public class PatientConsultationDB extends WhoseColumnsEntity{
 	
-	@Serial
-	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_registration_consultations")
@@ -123,12 +119,6 @@ public class PatientConsultationDB extends WhoseColumnsEntity implements Seriali
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 	
-	@JsonBackReference
-	@JsonProperty("patientDetailDB")
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "patient_Id", referencedColumnName = "patient_Id")
-	private PatientDetailsDB patientDetailDB;
-	
 	@JsonProperty("doctorCode")
 	@Column(name = "doctor_code")
 	private String doctorCode;
@@ -136,4 +126,12 @@ public class PatientConsultationDB extends WhoseColumnsEntity implements Seriali
 	@JsonProperty("siteId")
 	@Column(name = "site_id")
 	private Long siteId;
+	
+	@JsonBackReference
+	@JsonProperty("patientDetailDB")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "patient_Id", referencedColumnName = "patient_Id")
+	private PatientDetailsDB patientDetailDB;
+	
+	
 }

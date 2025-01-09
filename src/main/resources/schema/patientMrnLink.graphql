@@ -1,11 +1,11 @@
-type PatientMrnLink {
+type PatientMrnLinkDB {
     patientMrnLinkId: ID!
     familyMrn: String
     familyMrnRelation: String
     patientDetailDB: PatientDetailsDB
 }
 
-input MrnLinkInput {
+input PatientMrnLinkInput {
     patientMrnLinkId: ID
     familyMrn: String
     familyMrnRelation: String

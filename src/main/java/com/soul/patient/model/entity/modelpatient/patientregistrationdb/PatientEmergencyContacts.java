@@ -10,19 +10,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
 @Table(name = "EMR_REGISTRATION_EMERGENCY_CONTACT")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientEmergencyContacts extends WhoseColumnsEntity implements Serializable {
+public class PatientEmergencyContacts extends WhoseColumnsEntity {
     
-    @Serial
-    private static final long serialVersionUID = 1L;
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "registration_emergency_contact_info_seq")

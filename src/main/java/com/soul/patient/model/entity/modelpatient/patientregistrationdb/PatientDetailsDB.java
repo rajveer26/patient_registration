@@ -14,8 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,10 +29,8 @@ import java.util.Set;
 @JsonIdentityInfo(
 		generator = ObjectIdGenerators.PropertyGenerator.class,
 		property = "patientId", scope = PatientDetailsDB.class)
-public class PatientDetailsDB extends WhoseColumnsEntity implements Serializable{
+public class PatientDetailsDB extends WhoseColumnsEntity{
 	
-	@Serial
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_emr_patient_registration")

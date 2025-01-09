@@ -1,4 +1,4 @@
-type PatientInsurance {
+type PatientInsuranceDB {
     patientInsuranceInfoId: ID!
     insuranceType: String
     insuranceName: String
@@ -8,7 +8,7 @@ type PatientInsurance {
     patientDetailDB: PatientDetailsDB
 }
 
-input InsuranceInput {
+input PatientInsuranceDetailInput {
     patientInsuranceInfoId: ID
     insuranceType: String
     insuranceName: String

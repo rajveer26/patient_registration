@@ -14,8 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
@@ -24,10 +22,8 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientAppointmentDB extends WhoseColumnsEntity implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class PatientAppointmentDB extends WhoseColumnsEntity{
+    
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_appointments")

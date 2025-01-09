@@ -14,7 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientInsuranceDB extends WhoseColumnsEntity implements Serializable {
+public class PatientInsuranceDB extends WhoseColumnsEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "emr_patient_insurance_info_seq")

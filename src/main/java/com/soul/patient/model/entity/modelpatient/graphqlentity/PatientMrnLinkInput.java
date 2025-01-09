@@ -7,17 +7,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.io.Serial;
-import java.io.Serializable;
-
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientMrnLinkInput extends WhoseColumnsEntity implements Serializable{
-    
-    @Serial
-    private static final long serialVersionUID = 1L;
+public class PatientMrnLinkInput extends WhoseColumnsEntity{
     
     @JsonProperty("patientMrnLinkId")
     private Long patientMrnLinkId;
@@ -27,4 +21,7 @@ public class PatientMrnLinkInput extends WhoseColumnsEntity implements Serializa
 
     @JsonProperty("familyMrnRelation")
     private String familyMrnRelation;
+    
+    @JsonProperty("patientDetailDB")
+    private PatientDetailsInput patientDetailsInput;
 }

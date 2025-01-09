@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_PATIENT_APPOINTMENTS")
+@Table(name = "PATIENT_APPOINTMENTS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,7 +28,7 @@ public class PatientAppointmentDB extends WhoseColumnsEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_patient_self_appointments")
     @SequenceGenerator(name = "seq_patient_self_appointments", sequenceName = "seq_patient_self_appointments", allocationSize = 1)
-    @JsonProperty("patientConsultationId")
+    @JsonProperty("patientAppointmentId")
     @Column(name = "patient_appointment_id")
     private Long patientAppointmentId;
 

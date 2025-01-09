@@ -9,11 +9,11 @@ type PatientAppointmentDB {
 }
 
 input PatientAppointmentInput {
-    patientAppointmentId: ID
+    patientAppointmentId: Long
     appointmentType: String
     appointmentDate: String
     isActive: Boolean
     departmentMasterId: Long
     employeeInfoDB: Long
-    patientDetailsInput: PatientDetailsInput
+    patientDetailDB: PatientDetailsInput
 }

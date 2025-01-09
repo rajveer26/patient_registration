@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_PATIENT_MRN_LINKS")
+@Table(name = "PATIENT_MRN_LINKS")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,8 +20,8 @@ public class PatientMrnLinkDB extends WhoseColumnsEntity {
     
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "emr_patient_mrn_link_info_seq")
-    @SequenceGenerator(name = "emr_patient_mrn_link_info_seq", sequenceName = "emr_patient_mrn_link_info_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "patient_mrn_link_info_seq")
+    @SequenceGenerator(name = "patient_mrn_link_info_seq", sequenceName = "patient_mrn_link_info_seq", allocationSize = 1)
     @JsonProperty("patientMrnLinkId")
     @Column(name = "patient_mrn_link_id", length = 19)
     private Long patientMrnLinkId;

@@ -14,13 +14,13 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailsInput"})
+@EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PatientAppointmentInput extends WhoseColumnsEntity{
 
-    @JsonProperty("patientConsultationId")
+    @JsonProperty("patientAppointmentId")
     private Long patientAppointmentId;
 
     @JsonProperty("appointmentDate")
@@ -42,5 +42,5 @@ public class PatientAppointmentInput extends WhoseColumnsEntity{
     private Long employeeInfoDB;
 
     @JsonProperty("patientDetailDB")
-    private PatientDetailsInput patientDetailsInput;
+    private PatientDetailsInput patientDetailDB;
 }

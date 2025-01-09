@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = false, exclude = {"patientDetailDB"})
 @Entity
-@Table(name = "EMR_REGISTRATION_EMERGENCY_CONTACT")
+@Table(name = "PATIENT_REGISTRATION_EMERGENCY_CONTACT")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -40,14 +40,14 @@ public class PatientAppointmentDB extends WhoseColumnsEntity{
     @JsonProperty("appointmentDate")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate appointmentDate;
 
     @JsonProperty("isActive")
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @JsonProperty("departmentMasterDB")
+    @JsonProperty("departmentMasterId")
     @Column(name = "department_master_id")
     private Long departmentMasterId;
 

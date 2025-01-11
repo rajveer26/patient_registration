@@ -1,7 +1,7 @@
 type PatientAppointmentDB {
-    patientAppointmentId: ID!
+    patientAppointmentId: ID
     appointmentType: String
-    appointmentDate: String
+    appointmentDate: LocalDate
     isActive: Boolean
     departmentMasterId: Long
     employeeInfoDB: Long
@@ -11,7 +11,7 @@ type PatientAppointmentDB {
 input PatientAppointmentInput {
     patientAppointmentId: Long
     appointmentType: String
-    appointmentDate: String
+    appointmentDate: LocalDate
     isActive: Boolean
     departmentMasterId: Long
     employeeInfoDB: Long
